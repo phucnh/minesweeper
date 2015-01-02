@@ -1,7 +1,7 @@
 package jp.co.cyberagent.logic;
 
 import jp.co.cyberagent.components.Board;
-import jp.co.cyberagent.exceptions.*;
+import jp.co.cyberagent.components.exceptions.*;
 import jp.co.cyberagent.ui.GameView;
 
 import java.io.IOException;
@@ -41,9 +41,9 @@ public abstract class GameController {
 
     public boolean openSquare(int row, int col)
             throws SquareWrongValueException,
-                   SquareCheckedException,
-                   SquareOpenedException,
-                   BoardOutOfBoundException {
+            SquareCheckedException,
+            SquareOpenedException,
+            BoardOutOfBoundException {
 
         return this.board.openSquare(row, col);
     }

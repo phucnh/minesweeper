@@ -1,8 +1,8 @@
 package jp.co.cyberagent.ui;
 
 import jp.co.cyberagent.components.*;
-import jp.co.cyberagent.exceptions.BoardException;
-import jp.co.cyberagent.exceptions.ConsoleViewException;
+import jp.co.cyberagent.components.exceptions.BoardException;
+import jp.co.cyberagent.ui.exceptions.ConsoleViewException;
 
 import java.io.*;
 
@@ -44,7 +44,8 @@ public class ConsoleView extends GameView {
 
         for (int r = 0; r < height; r++) {
             // print row index
-            buffWriter.write(r);
+            buffWriter.write(String.format("%d", r));
+            buffWriter.flush();
 
             for (int c = 0; c < width; c++) {
 
@@ -57,6 +58,9 @@ public class ConsoleView extends GameView {
                 }
 
             }
+
+            // write new line
+            buffWriter.newLine();
 
         }
 
@@ -122,6 +126,6 @@ public class ConsoleView extends GameView {
 
     private String getCharForNumber(int i) {
         // alphabet letter is from 97 (a) to 122 (z)
-        return i > 0 && i < 27 ? String.valueOf((char)(i + 97)) : null;
+        return i >= 0 && i < 26 ? String.valueOf((char)(i + 97)) : null;
     }
 }

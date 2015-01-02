@@ -1,11 +1,15 @@
 package jp.co.cyberagent.logic;
 
-import jp.co.cyberagent.exceptions.BoardCreateUnable;
-import jp.co.cyberagent.exceptions.SquareWrongValueException;
-import jp.co.cyberagent.exceptions.ViewException;
+import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
+import jp.co.cyberagent.components.exceptions.SquareWrongValueException;
+import jp.co.cyberagent.ui.exceptions.ViewException;
 import jp.co.cyberagent.ui.ConsoleView;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**

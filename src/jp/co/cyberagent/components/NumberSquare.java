@@ -1,13 +1,13 @@
 package jp.co.cyberagent.components;
 
-import jp.co.cyberagent.exceptions.SquareWrongValueException;
+import jp.co.cyberagent.components.exceptions.SquareWrongValueException;
 
 /**
  * Created by phucnh on 15/01/01.
  */
 public class NumberSquare extends Square {
 
-    private byte value;
+    private Byte value;
 
     protected NumberSquare(byte value) throws SquareWrongValueException {
 

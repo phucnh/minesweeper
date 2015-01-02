@@ -1,4 +1,4 @@
-package jp.co.cyberagent.exceptions;
+package jp.co.cyberagent.components.exceptions;
 
 /**
  * Created by phucnh on 15/01/01.

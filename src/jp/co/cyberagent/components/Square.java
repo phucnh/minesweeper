@@ -1,8 +1,7 @@
 package jp.co.cyberagent.components;
 
-import jp.co.cyberagent.exceptions.SquareCheckedException;
-import jp.co.cyberagent.exceptions.SquareException;
-import jp.co.cyberagent.exceptions.SquareOpenedException;
+import jp.co.cyberagent.components.exceptions.SquareCheckedException;
+import jp.co.cyberagent.components.exceptions.SquareOpenedException;
 
 /**
  * Created by phucnh on 14/12/31.

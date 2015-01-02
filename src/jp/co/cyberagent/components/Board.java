@@ -1,6 +1,6 @@
 package jp.co.cyberagent.components;
 
-import jp.co.cyberagent.exceptions.*;
+import jp.co.cyberagent.components.exceptions.*;
 
 import java.util.Random;
 
@@ -34,7 +34,7 @@ public class Board {
      * @param height board's height
      * @param width board's width
      * @param mineQty board's mine quantity
-     * @throws BoardCreateUnable if height, width, mine quantity are within invalid range
+     * @throws jp.co.cyberagent.components.exceptions.BoardCreateUnable if height, width, mine quantity are within invalid range
      */
     public Board(int height, int width, long mineQty) throws BoardCreateUnable, SquareWrongValueException {
 
@@ -97,7 +97,7 @@ public class Board {
 
     public Square toggleMineCheckSquare(int row, int col)
             throws BoardOutOfBoundException,
-                   SquareOpenedException {
+            SquareOpenedException {
         // check choose square's index, throws exception
         checkChooseSquareIndex(row, col);
 
@@ -121,7 +121,7 @@ public class Board {
     public boolean openSquare(int row, int col)
             throws BoardOutOfBoundException,
                    SquareWrongValueException,
-                   SquareCheckedException,
+            SquareCheckedException,
                    SquareOpenedException {
         // check choose square's index, throws exception
         checkChooseSquareIndex(row, col);

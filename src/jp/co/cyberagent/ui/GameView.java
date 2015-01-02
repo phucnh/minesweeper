@@ -2,7 +2,7 @@ package jp.co.cyberagent.ui;
 
 import jp.co.cyberagent.components.Board;
 import jp.co.cyberagent.components.Square;
-import jp.co.cyberagent.exceptions.ViewException;
+import jp.co.cyberagent.ui.exceptions.ViewException;
 
 import java.io.IOException;
 
