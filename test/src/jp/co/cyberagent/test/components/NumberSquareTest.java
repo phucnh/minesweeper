@@ -52,6 +52,7 @@ public class NumberSquareTest {
     @Test
     public void testConstructorFailed() {
 
+        // create object with value is 0
         try {
             // get NumberSquare constructor
             Constructor<NumberSquare> constructor =
@@ -60,6 +61,33 @@ public class NumberSquareTest {
 
             // create new number square object
             constructor.newInstance((byte) 0);
+
+        } catch (ReflectiveOperationException e) {
+
+            // get InvocationTargetException's target
+            assertTrue(e instanceof InvocationTargetException);
+            InvocationTargetException itEx = (InvocationTargetException) e;
+            Throwable targetEx = itEx.getTargetException();
+
+            // ensure SquareWrongValueException
+            assertTrue(targetEx instanceof SquareWrongValueException);
+            SquareWrongValueException sqwEx =
+                    (SquareWrongValueException) targetEx;
+
+            // ensure exception message
+            assertEquals(sqwEx.getMessage(), "Square's value must be from 1 to 8");
+
+        }
+
+        // create object with value is 9
+        try {
+            // get NumberSquare constructor
+            Constructor<NumberSquare> constructor =
+                    NumberSquare.class.getDeclaredConstructor(byte.class);
+            constructor.setAccessible(true);
+
+            // create new number square object
+            constructor.newInstance((byte) 9);
 
         } catch (ReflectiveOperationException e) {
 
