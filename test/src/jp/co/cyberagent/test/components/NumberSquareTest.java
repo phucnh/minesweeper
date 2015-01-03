@@ -36,8 +36,8 @@ public class NumberSquareTest {
             // ensure number square object's elements
             assertNotNull(numSquare.getValue());
             assertTrue(numSquare.getValue() == 1);
-            assertFalse(numSquare.isOpen());
-            assertFalse(numSquare.isMineCheck());
+            assertFalse(numSquare.isOpened());
+            assertFalse(numSquare.isMineChecked());
 
         } catch (Exception e) {
             // test case not pass

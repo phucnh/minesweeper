@@ -109,7 +109,7 @@ public class Board {
         // add 1 to check mine count if checked
         // subtract 1 to check mine count if unchecked
         if (square instanceof MineSquare) {
-            if (square.isMineCheck())
+            if (square.isMineChecked())
                 this.checkedMineCount += 1;
             else
                 this.checkedMineCount -= 1;

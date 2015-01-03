@@ -86,9 +86,9 @@ public class ConsoleView extends GameView {
     @Override
     public void displaySquare(Square square) throws IOException {
 
-        if (!square.isOpen()) {
+        if (!square.isOpened()) {
 
-            if (square.isMineCheck())
+            if (square.isMineChecked())
                 buffWriter.write('x');
             else
                 buffWriter.write('?');

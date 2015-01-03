@@ -8,44 +8,44 @@ import jp.co.cyberagent.components.exceptions.SquareOpenedException;
  */
 public abstract class Square {
 
-    private boolean isOpen;
-    private boolean isMineCheck;
+    private boolean isOpened;
+    private boolean isMineChecked;
 
     public Square() {
-        isOpen = false;
-        isMineCheck = false;
+        isOpened = false;
+        isMineChecked = false;
     }
 
-    public boolean isOpen() {
-        return this.isOpen;
+    public boolean isOpened() {
+        return this.isOpened;
     }
 
-    public boolean isMineCheck() {
-        return this.isMineCheck;
+    public boolean isMineChecked() {
+        return this.isMineChecked;
     }
 
     protected void open()
             throws SquareOpenedException,
                    SquareCheckedException {
 
-        if (this.isOpen)
+        if (this.isOpened)
             throw new SquareOpenedException("Square has been opened, cannot open square");
 
-        if (this.isMineCheck())
-            throw new SquareCheckedException("Square has been mine marked, can not mark again");
+        if (this.isMineChecked())
+            throw new SquareCheckedException("Square has been mine marked, can not open square");
 
-        this.isOpen = true;
+        this.isOpened = true;
 
     }
 
     protected void toggleMineCheck() throws SquareOpenedException {
 
         // check did square open or not
-        if (this.isOpen)
+        if (this.isOpened)
             throw new SquareOpenedException("Square has been opened, cannot toggle mine check");
 
         // change square check
-        this.isMineCheck = !isMineCheck;
+        this.isMineChecked = !isMineChecked;
     }
 
 }
