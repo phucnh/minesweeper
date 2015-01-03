@@ -56,14 +56,23 @@ public class ConsoleGameController extends GameController {
     protected void play() throws BoardCreateUnable, ViewException, SquareWrongValueException, IOException {
 
         HashMap<String, String> settings = new HashMap<String, String>();
+        boolean isPlayDone = false;
         settings.put("height", "5");
         settings.put("width", "5");
         settings.put("mine_quantity", "5");
 
         this.createNewGame(settings);
 
-        this.gameView.displayBoard(this.getBoard());
+        while (!isPlayDone) {
 
+            this.gameView.displayBoard(this.getBoard());
+
+            String squareChosen = (String) this.gameView.chooseSquare();
+            System.out.println(squareChosen);
+
+            if (squareChosen.equals("0"))
+                isPlayDone = true;
+        }
     }
 
 }

@@ -124,6 +124,14 @@ public class ConsoleView extends GameView {
         System.out.println("Oops! You opened the mine! Game over.");
     }
 
+    @Override
+    public String chooseSquare() throws IOException {
+        buffWriter.write("Please, choose square to open or mine check (0 for back to Main Menu) ");
+        buffWriter.newLine();
+        buffWriter.flush();
+        return buffReader.readLine();
+    }
+
     private String getCharForNumber(int i) {
         // alphabet letter is from 97 (a) to 122 (z)
         return i >= 0 && i < 26 ? String.valueOf((char)(i + 97)) : null;

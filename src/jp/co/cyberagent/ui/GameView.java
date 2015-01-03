@@ -21,4 +21,6 @@ public abstract class GameView {
 
     public abstract void onLose();
 
+    public abstract Object chooseSquare() throws IOException;
+
 }

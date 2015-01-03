@@ -1,14 +1,26 @@
 package jp.co.cyberagent.test.components;
 
-import junit.framework.TestCase;
+import jp.co.cyberagent.components.Square;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-public class SquareTest extends TestCase {
+import org.mockito.Mockito;
 
-    public void testIsOpen() throws Exception {
 
-    }
+public class SquareTest {
 
-    public void testIsMineCheck() throws Exception {
+    /**
+     * Test create Square's object (using mock)
+     */
+    @Test
+    public void testConstructor() {
+
+        // mock square object for test constructor
+        Square square = Mockito.mock(Square.class);
+
+        // test square's object elements
+        assertFalse(square.isOpen());
+        assertFalse(square.isMineCheck());
 
     }
 
