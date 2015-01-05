@@ -73,9 +73,6 @@ public class Board {
         // create gird
         this.grid = new Square[height][width];
 
-        // generate grid with randomly mine
-        this.fill();
-
         // when create new board
         // set first choose square is false
         this.isFirstSquareOpened = false;
@@ -83,6 +80,9 @@ public class Board {
         this.checkedMineCount = 0l;
         // set opened mine count is 0
         this.openedMineCount = 0l;
+
+        // generate grid with allocate mine randomly
+        this.fill();
 
     }
 
@@ -146,7 +146,7 @@ public class Board {
      * @throws SquareCheckedException
      * @throws SquareOpenedException
      */
-    public PlaySatus openSquare(int row, int col)
+    public PlayStatus openSquare(int row, int col)
             throws BoardOutOfBoundException,
                    SquareWrongValueException,
                    SquareCheckedException,
@@ -172,18 +172,18 @@ public class Board {
 
         // check if lose, return immediately
         if (square instanceof MineSquare) {
-            return PlaySatus.LOSE;
+            return PlayStatus.LOSE;
         }
 
         // check is win, return immediately
         // TODO: optimize this?
         if (this.openedMineCount.equals(height * width - mineQty)) {
-            return PlaySatus.WIN;
+            return PlayStatus.WIN;
         }
 
         // TODO: implement related square
 
-        return PlaySatus.NORMAL;
+        return PlayStatus.NORMAL;
 
     }
 
@@ -236,8 +236,8 @@ public class Board {
      */
     private void fillMine(int numMine) {
 
-        // terminal if current mines same with board's mine quantity
-        if (numMine == this.mineQty) return;
+        // terminal if current mines greater than board's mine quantity
+        if (numMine > this.mineQty) return;
 
         Random rand = new Random();
 
@@ -251,7 +251,7 @@ public class Board {
         } else {
             // set square is mine square
             this.grid[row][col] = new MineSquare();
-
+            System.out.println(String.format("Mine %d %d", row, col));
             // fill mine to another
             fillMine(++numMine);
         }

@@ -2,6 +2,7 @@ package jp.co.cyberagent.test.components;
 
 import jp.co.cyberagent.components.Board;
 
+import jp.co.cyberagent.components.Square;
 import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 
 import org.junit.Test;
@@ -62,6 +63,10 @@ public class BoardTest {
             assertEquals(0l, bOpenedMineCount.get(board));
 
             // TODO: test board's grid
+            // ensure board's grid
+            Field bGrid = Board.class.getDeclaredField("grid");
+            bGrid.setAccessible(true);
+            
 
         } catch (Exception e) {
             fail();

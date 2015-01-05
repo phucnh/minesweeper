@@ -23,4 +23,8 @@ public abstract class GameView {
 
     public abstract Object chooseSquare() throws IOException;
 
+    public abstract void showMessage(String message) throws IOException;
+
+    public abstract Object chooseSquareMode() throws IOException;
+
 }

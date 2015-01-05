@@ -132,6 +132,21 @@ public class ConsoleView extends GameView {
         return buffReader.readLine();
     }
 
+    @Override
+    public void showMessage(String message) throws IOException {
+        buffWriter.write(message);
+        buffWriter.newLine();
+        buffWriter.flush();
+    }
+
+    @Override
+    public String chooseSquareMode() throws IOException {
+        buffWriter.write("Please, choose open (o) or toggle mine checked (x)");
+        buffWriter.newLine();
+        buffWriter.flush();
+        return buffReader.readLine();
+    }
+
     private String getCharForNumber(int i) {
         // alphabet letter is from 97 (a) to 122 (z)
         return i >= 0 && i < 26 ? String.valueOf((char)(i + 97)) : null;

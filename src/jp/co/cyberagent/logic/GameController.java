@@ -1,7 +1,7 @@
 package jp.co.cyberagent.logic;
 
 import jp.co.cyberagent.components.Board;
-import jp.co.cyberagent.components.PlaySatus;
+import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.components.exceptions.*;
 import jp.co.cyberagent.ui.GameView;
 
@@ -40,7 +40,7 @@ public abstract class GameController {
 
     }
 
-    public PlaySatus openSquare(int row, int col)
+    public PlayStatus openSquare(int row, int col)
             throws SquareWrongValueException,
             SquareCheckedException,
             SquareOpenedException,
