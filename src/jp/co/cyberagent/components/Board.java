@@ -251,7 +251,7 @@ public class Board {
         } else {
             // set square is mine square
             this.grid[row][col] = new MineSquare();
-            System.out.println(String.format("Mine %d %d", row, col));
+
             // fill mine to another
             fillMine(++numMine);
         }

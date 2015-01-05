@@ -1,13 +1,17 @@
 package jp.co.cyberagent.test.components;
 
-import jp.co.cyberagent.components.Board;
+import jp.co.cyberagent.components.*;
 
-import jp.co.cyberagent.components.Square;
 import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 
+import jp.co.cyberagent.components.exceptions.BoardOutOfBoundException;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -66,7 +70,63 @@ public class BoardTest {
             // ensure board's grid
             Field bGrid = Board.class.getDeclaredField("grid");
             bGrid.setAccessible(true);
-            
+            Square[][] grid = (Square[][]) bGrid.get(board);
+
+            // ensure grid size
+            // ensure grid's length
+            assertEquals(5, grid.length);
+
+            // ensure grid length of each row
+            for (Square[] gridRow : grid) {
+                assertEquals(15, gridRow.length);
+            }
+
+            // ensure grid's squares
+            // mine count
+            long mineCount = 0l;
+
+            // count number of mine
+            for (int r = 0; r < 5; r++) {
+                for (int c = 0; c < 15; c++) {
+                    // ensure each square in grid is same with board's get square
+                    assertEquals(board.getSquare(r, c), grid[r][c]);
+
+                    // get square
+                    Square square = grid[r][c];
+
+                    // update mine count when square is mine square
+                    if (square instanceof MineSquare) {
+                        ++mineCount;
+                    } else {
+                        // count mine around square
+                        byte mineAround = countMineAroundSquare(grid, r, c);
+
+                        // when count mine around is 0, ensure square is empty square
+                        // otherwise, ensure square is number square, ensure square's value
+                        if (mineAround == 0) {
+                            // ensure square is empty square
+                            assertTrue(square instanceof EmptySquare);
+                        } else {
+                            // ensure square is number square
+                            assertTrue(square instanceof NumberSquare);
+
+                            // convert to number square
+                            NumberSquare numSquare = (NumberSquare) square;
+
+                            // ensure number square value
+                            assertEquals(mineAround,
+                                         (byte) numSquare.getValue());
+                        }
+
+                    }
+
+
+                }
+            }
+
+            // ensure number of mine
+            assertEquals(6l, mineCount);
+
 
         } catch (Exception e) {
             fail();
@@ -119,6 +179,100 @@ public class BoardTest {
                     e.getMessage()
             );
         }
+    }
+
+    private byte countMineAroundSquare(
+            Square[][] grid,
+            int row,
+            int col) {
+        // mine count
+        byte count = 0;
+
+        // check mine around square
+        for (Direction dir : Direction.values()) {
+            Square neighbor = getNeighborSquare(grid, row, col, dir);
+
+            // when square is mine square, update mine count
+            if (neighbor != null && neighbor instanceof MineSquare)
+                count += 1;
+        }
+
+        return count;
+    }
+
+    private Square getNeighborSquare(Square[][] grid,
+                                     int row,
+                                     int col,
+                                     Direction direction) {
+
+        int r = row;
+        int c = col;
+
+        // find the square follow direction
+        switch (direction) {
+            case TOP_LEFT:
+                r--; c--;
+                break;
+            case TOP:
+                r--;
+                break;
+            case TOP_RIGHT:
+                r--; c++;
+                break;
+            case RIGHT:
+                c++;
+                break;
+            case BOTTOM_RIGHT:
+                r++; c--;
+                break;
+            case BOTTOM:
+                r++;
+                break;
+            case BOTTOM_LEFT:
+                r++; c--;
+                break;
+            case LEFT:
+                c--;
+                break;
+            default:
+                break;
+        }
+
+        // check is row and column out of bound
+        // if out of bound, return null
+        // otherwise return grid[row][column]
+        if (isInGridSizeBound(r, c)) {
+            // when square's index valid, return square
+            return grid[r][c];
+        } else {
+            return null;
+        }
+
+    }
+
+    private boolean isInGridSizeBound(int row, int col) {
+        // check row
+        if (row < 0 || row >= 5)
+            return false;
+
+        // check column
+        if (col < 0 || col >= 15)
+            return false;
+
+        return true;
+    }
+
+
+    // direction for get square neighbour, use for test only
+    enum Direction {
+        TOP_LEFT,
+        TOP,
+        TOP_RIGHT,
+        RIGHT,
+        BOTTOM_RIGHT,
+        BOTTOM,
+        BOTTOM_LEFT,
+        LEFT
     }
 
 }
