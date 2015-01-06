@@ -7,6 +7,7 @@ import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 import jp.co.cyberagent.components.exceptions.BoardOutOfBoundException;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -179,6 +180,136 @@ public class BoardTest {
                     e.getMessage()
             );
         }
+    }
+
+    /**
+     * Test create Board object: failed case, mine quantity is out of bound
+     */
+    @Test
+    public void testCreateBoardFailedMineOutOfBound() {
+
+        // mine out of bound < 1
+        try {
+            // create new board with mine quantity is 0
+            new Board(5, 15, 0);
+        } catch (Exception e) {
+            // ensure exception is instance of BoardCreateUnable
+            assertTrue(e instanceof BoardCreateUnable);
+
+            // ensure exception message
+            assertEquals(
+                    String.format(
+                            "Board's mine must be more than 1 and less than %d",
+                            5 * 15 - 1),
+                    e.getMessage()
+            );
+        }
+
+        // mine out of bound > height*width - 1
+        try {
+            // create new board with mine quantity out of bound > height*width - 1
+            new Board(5, 15, 5 * 15);
+        } catch (Exception e) {
+            // ensure exception is instance of BoardCreateUnable
+            assertTrue(e instanceof BoardCreateUnable);
+
+            // ensure exception message
+            assertEquals(
+                    String.format(
+                            "Board's mine must be more than 1 and less than %d",
+                            5 * 15 - 1),
+                    e.getMessage()
+            );
+        }
+    }
+
+    @Test
+    public void testToggleSquareSuccessfully() {
+
+    }
+
+    private Square[][] createBoard() {
+
+        Square[][] grid = new Square[8][8];
+
+        // put mine
+        grid[1][5] = createMineSquare();
+        grid[3][6] = createMineSquare();
+        grid[4][0] = createMineSquare();
+        grid[4][4] = createMineSquare();
+        grid[6][1] = createMineSquare();
+        grid[6][5] = createMineSquare();
+        grid[6][6] = createMineSquare();
+        grid[7][2] = createMineSquare();
+        grid[7][3] = createMineSquare();
+        grid[7][7] = createMineSquare();
+
+        // put number square
+        grid[0][4] = createNumberSquare((byte) 1);
+        grid[0][5] = createNumberSquare((byte) 1);
+        grid[0][6] = createNumberSquare((byte) 1);
+
+        grid[1][4] = createNumberSquare((byte) 1);
+        grid[1][6] = createNumberSquare((byte) 1);
+
+        grid[2][4] = createNumberSquare((byte) 1);
+        grid[2][5] = createNumberSquare((byte) 2);
+        grid[2][6] = createNumberSquare((byte) 2);
+        grid[2][7] = createNumberSquare((byte) 1);
+
+
+        return grid;
+    }
+
+    private MineSquare createMineSquare() {
+
+        try {
+            Constructor<MineSquare> constructor =
+                    MineSquare.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+
+            // create new mine square object
+            return constructor.newInstance();
+        } catch (Exception e) {
+            fail();
+        }
+
+        fail();
+        return null;
+    }
+
+    private EmptySquare createEmptySquare() {
+
+        try {
+            Constructor<EmptySquare> constructor =
+                    EmptySquare.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+
+            // create new empty square object
+            return constructor.newInstance();
+        } catch (Exception e) {
+            fail();
+        }
+
+        fail();
+        return null;
+    }
+
+    private NumberSquare createNumberSquare(byte value) {
+
+        try {
+            Constructor<NumberSquare> constructor =
+                    NumberSquare.class.getDeclaredConstructor(byte.class);
+            constructor.setAccessible(true);
+
+            // create new number square object
+            return constructor.newInstance(value);
+        } catch (Exception e) {
+            fail();
+        }
+
+        fail();
+        return null;
     }
 
     private byte countMineAroundSquare(

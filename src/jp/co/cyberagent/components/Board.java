@@ -115,7 +115,7 @@ public class Board {
      */
     public Square toggleMineCheckSquare(int row, int col)
             throws BoardOutOfBoundException,
-            SquareOpenedException {
+                   SquareOpenedException {
         // check choose square's index, throws exception
         checkChooseSquareIndex(row, col);
 
