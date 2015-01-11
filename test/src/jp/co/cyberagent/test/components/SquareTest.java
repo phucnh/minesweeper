@@ -86,6 +86,10 @@ public class SquareTest {
 
             // open the opened square
             method.invoke(square);
+
+            // test case not pass
+            fail();
+
         } catch (ReflectiveOperationException e) {
             // get InvocationTargetException's target
             assertTrue(e instanceof InvocationTargetException);
@@ -94,11 +98,10 @@ public class SquareTest {
 
             // ensure SquareOpenedException
             assertTrue(targetEx instanceof SquareOpenedException);
-            SquareOpenedException sqOpenedEx =
-                    (SquareOpenedException) targetEx;
 
             // ensure exception message
-            assertEquals(sqOpenedEx.getMessage(), "Square has been opened, cannot open square");
+            assertEquals("Square has been opened, cannot open square",
+                         targetEx.getMessage());
 
             // ensure square is opened
             assertTrue(square.isOpened());
@@ -143,6 +146,10 @@ public class SquareTest {
 
             // open the opened square
             method.invoke(square);
+
+            // test case not pass
+            fail();
+
         } catch (ReflectiveOperationException e) {
             // get InvocationTargetException's target
             assertTrue(e instanceof InvocationTargetException);
@@ -151,11 +158,10 @@ public class SquareTest {
 
             // ensure SquareCheckedException
             assertTrue(targetEx instanceof SquareCheckedException);
-            SquareCheckedException sqCheckedEx =
-                    (SquareCheckedException) targetEx;
 
             // ensure exception message
-            assertEquals(sqCheckedEx.getMessage(), "Square has been mine marked, can not open square");
+            assertEquals("Square has been mine marked, can not open square",
+                         targetEx.getMessage());
         }
 
     }
@@ -225,6 +231,9 @@ public class SquareTest {
             // run function, mark square is checked
             method.invoke(square);
 
+            // test case not pass
+            fail();
+
         } catch (Exception e) {
             // get InvocationTargetException's target
             assertTrue(e instanceof InvocationTargetException);
@@ -233,11 +242,10 @@ public class SquareTest {
 
             // ensure SquareOpenedException
             assertTrue(targetEx instanceof SquareOpenedException);
-            SquareOpenedException sqOpenedEx =
-                    (SquareOpenedException) targetEx;
 
             // ensure exception message
-            assertEquals(sqOpenedEx.getMessage(), "Square has been opened, cannot toggle mine check");
+            assertEquals("Square has been opened, cannot toggle mine check",
+                         targetEx.getMessage());
         }
 
     }

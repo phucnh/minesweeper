@@ -5,6 +5,9 @@ package jp.co.cyberagent.components;
  */
 public class EmptySquare extends Square {
 
+    /**
+     * Create the empty square object
+     */
     protected EmptySquare() {
         super();
     }

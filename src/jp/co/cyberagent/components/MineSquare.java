@@ -5,6 +5,9 @@ package jp.co.cyberagent.components;
  */
 public class MineSquare extends Square {
 
+    /**
+     * Create mine square object
+     */
     protected MineSquare() {
         super();
     }

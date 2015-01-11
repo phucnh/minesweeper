@@ -9,6 +9,11 @@ public class NumberSquare extends Square {
 
     private Byte value;
 
+    /**
+     * Create the number square instance
+     * @param value the number square value
+     * @throws SquareWrongValueException when the value is not from 1 to 8
+     */
     protected NumberSquare(byte value) throws SquareWrongValueException {
 
         if (value < 1 || value > 8)
@@ -18,6 +23,10 @@ public class NumberSquare extends Square {
 
     }
 
+    /**
+     * Get number square's value
+     * @return Byte the square's value
+     */
     public Byte getValue() {
         return value;
     }

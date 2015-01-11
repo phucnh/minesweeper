@@ -62,6 +62,9 @@ public class NumberSquareTest {
             // create new number square object
             constructor.newInstance((byte) 0);
 
+            // test case not pass
+            fail();
+
         } catch (ReflectiveOperationException e) {
 
             // get InvocationTargetException's target
@@ -71,11 +74,10 @@ public class NumberSquareTest {
 
             // ensure SquareWrongValueException
             assertTrue(targetEx instanceof SquareWrongValueException);
-            SquareWrongValueException sqwEx =
-                    (SquareWrongValueException) targetEx;
 
             // ensure exception message
-            assertEquals(sqwEx.getMessage(), "Square's value must be from 1 to 8");
+            assertEquals("Square's value must be from 1 to 8",
+                         targetEx.getMessage());
 
         }
 
@@ -89,6 +91,9 @@ public class NumberSquareTest {
             // create new number square object
             constructor.newInstance((byte) 9);
 
+            // test case not pass
+            fail();
+
         } catch (ReflectiveOperationException e) {
 
             // get InvocationTargetException's target
@@ -98,11 +103,10 @@ public class NumberSquareTest {
 
             // ensure SquareWrongValueException
             assertTrue(targetEx instanceof SquareWrongValueException);
-            SquareWrongValueException sqwEx =
-                    (SquareWrongValueException) targetEx;
 
             // ensure exception message
-            assertEquals(sqwEx.getMessage(), "Square's value must be from 1 to 8");
+            assertEquals("Square's value must be from 1 to 8",
+                         targetEx.getMessage());
 
         }
 

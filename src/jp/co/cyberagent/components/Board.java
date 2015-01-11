@@ -1,22 +1,24 @@
 package jp.co.cyberagent.components;
 
-import jp.co.cyberagent.components.exceptions.*;
-
 import java.util.Random;
+
+import jp.co.cyberagent.components.exceptions.*;
 
 /**
  * Created by phucnh on 14/12/31.
+ * The game's element: Board
+ * Each board contain a grid of squares
  */
 public class Board {
 
     // Board range
     // width range
     public static final int MIN_WIDTH = 3;
-    public static final long MAX_WIDTH = Integer.MAX_VALUE;
+    public static final long MAX_WIDTH = 60000;
 
     // height range
     public static final int MIN_HEIGHT = 3;
-    public static final long MAX_HEIGHT = Integer.MAX_VALUE;
+    public static final long MAX_HEIGHT = 60000;
 
     // Board attributes
     // grid, array of square
@@ -24,11 +26,7 @@ public class Board {
     private Integer height;
     private Integer width;
     private Long mineQty;
-    private Long checkedMineCount;
     private Long openedMineCount;
-
-    // private attribute for check is first square open or not
-    private boolean isFirstSquareOpened;
 
     /**
      * Board constructor, create game board
@@ -38,7 +36,9 @@ public class Board {
      * @throws BoardCreateUnable if height, width, mine quantity are within invalid range
      * @throws SquareWrongValueException
      */
-    public Board(int height, int width, long mineQty) throws BoardCreateUnable, SquareWrongValueException {
+    public Board(int height, int width, long mineQty)
+            throws BoardCreateUnable,
+                   SquareWrongValueException {
 
         //.validate the board input
         // validate height
@@ -74,13 +74,8 @@ public class Board {
         this.grid = new Square[height][width];
 
         // when create new board
-        // set first choose square is false
-        this.isFirstSquareOpened = false;
-        // set checked mine count is 0
-        this.checkedMineCount = 0l;
         // set opened mine count is 0
         this.openedMineCount = 0l;
-
         // generate grid with allocate mine randomly
         this.fill();
 
@@ -116,6 +111,7 @@ public class Board {
     public Square toggleMineCheckSquare(int row, int col)
             throws BoardOutOfBoundException,
                    SquareOpenedException {
+
         // check choose square's index, throws exception
         checkChooseSquareIndex(row, col);
 
@@ -123,17 +119,8 @@ public class Board {
         Square square = this.grid[row][col];
         square.toggleMineCheck();
 
-        // if check square is mine, update opened mine count
-        // add 1 to check mine count if checked
-        // subtract 1 to check mine count if unchecked
-        if (square instanceof MineSquare) {
-            if (square.isMineChecked())
-                this.checkedMineCount += 1;
-            else
-                this.checkedMineCount -= 1;
-        }
-
         return square;
+
     }
 
     /**
@@ -142,24 +129,16 @@ public class Board {
      * @param col the square's column index
      * @return PlaySatus is gamer win, lose, or normal
      * @throws BoardOutOfBoundException
-     * @throws SquareWrongValueException
      * @throws SquareCheckedException
      * @throws SquareOpenedException
      */
     public PlayStatus openSquare(int row, int col)
             throws BoardOutOfBoundException,
-                   SquareWrongValueException,
                    SquareCheckedException,
                    SquareOpenedException {
+
         // check choose square's index, throws exception
         checkChooseSquareIndex(row, col);
-
-
-        // if is the first open square, generate board
-        if (this.isFirstSquareOpened) {
-
-            this.isFirstSquareOpened = true;
-        }
 
         // get square
         Square square = this.grid[row][col];
@@ -193,6 +172,7 @@ public class Board {
      */
     private void checkChooseSquareIndex(int row, int col)
             throws BoardOutOfBoundException {
+
         // check input
         // check input row
         if (row < 0 || row >= this.height)
@@ -200,7 +180,8 @@ public class Board {
 
         // check input column
         if (col < 0 || col >= this.width)
-            throw new BoardOutOfBoundException("Chosen height out of bound");
+            throw new BoardOutOfBoundException("Chosen column out of bound");
+
     }
 
     /**
@@ -208,6 +189,7 @@ public class Board {
      * @throws SquareWrongValueException
      */
     private void fill() throws SquareWrongValueException {
+
         // fill mine
         fillMine(1);
 
@@ -227,8 +209,10 @@ public class Board {
                     this.grid[r][c] = new EmptySquare();
                 else
                     this.grid[r][c] = new NumberSquare(checkAround);
+
             }
         }
+
     }
 
     /**
@@ -263,6 +247,7 @@ public class Board {
      * @return number of mine around
      */
     private byte countMineAround(int row, int col) {
+
         byte count = 0;
 
         // check mine around square
@@ -274,10 +259,11 @@ public class Board {
         }
 
         return count;
+
     }
 
     /**
-     * get neighbor around square by direction
+     * Get neighbor around square by direction
      * @param row
      * @param col
      * @param direction
