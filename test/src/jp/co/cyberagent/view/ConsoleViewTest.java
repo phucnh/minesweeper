@@ -33,15 +33,15 @@ public class ConsoleViewTest {
 
         try {
 
+            // set input
+            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
+            System.setIn(in);
+
             // create a view
             ConsoleView view = new ConsoleView(
                     new BufferedReader(new InputStreamReader(System.in)),
                     new BufferedWriter(new OutputStreamWriter(System.out))
             );
-
-            // set input
-            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
-            System.setIn(in);
 
             // test function
             String chosen = view.mainMenu();
@@ -119,15 +119,15 @@ public class ConsoleViewTest {
 
         try {
 
+            // set input
+            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
+            System.setIn(in);
+
             // create a view
             ConsoleView view = new ConsoleView(
                     new BufferedReader(new InputStreamReader(System.in)),
                     new BufferedWriter(new OutputStreamWriter(System.out))
             );
-
-            // set input
-            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
-            System.setIn(in);
 
             // test function
             String chosen = view.chooseSquare();
@@ -167,15 +167,15 @@ public class ConsoleViewTest {
 
         try {
 
+            // set input
+            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
+            System.setIn(in);
+            
             // create a view
             ConsoleView view = new ConsoleView(
                     new BufferedReader(new InputStreamReader(System.in)),
                     new BufferedWriter(new OutputStreamWriter(System.out))
             );
-
-            // set input
-            ByteArrayInputStream in = new ByteArrayInputStream("0".getBytes());
-            System.setIn(in);
 
             // test function
             String chosen = view.chooseSquareMode();
