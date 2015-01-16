@@ -9,5 +9,6 @@ package jp.co.cyberagent.components;
 public enum PlayStatus {
     WIN, // win status
     LOSE, // lose status
-    NORMAL // normal status, game continue
+    NORMAL, // normal status, game continue
+    EXIT // exit status, exit when play game
 }

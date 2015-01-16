@@ -3,59 +3,143 @@ package jp.co.cyberagent.logic;
 import jp.co.cyberagent.components.Board;
 import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.components.exceptions.*;
+import jp.co.cyberagent.exceptions.GameException;
 import jp.co.cyberagent.ui.GameView;
+import jp.co.cyberagent.ui.exceptions.ViewException;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by phucnh on 14/12/31.
+ *
+ * Base Game controller class
  */
 public abstract class GameController {
 
+    // the game board
     private Board board;
+
+    // game settings
+    private Map<String, String> settings;
+
+    // game view, this view interact with user
+    protected GameView gameView;
 
     private GameController() {}
 
-    protected GameView gameView;
-
+    /**
+     * Base constructor, set the game view and run game
+     * @param view
+     */
     public GameController(GameView view) {
+
+        // set view
         this.gameView = view;
+
+        // initialize the basic settings
+        this.settings = new HashMap<String, String>();
+        settings.put("height", "5");
+        settings.put("width", "5");
+        settings.put("mine_quantity", "5");
+
+        // run game
+        try {
+            this.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
+    /**
+     * Get game's board
+     * @return Board the game's board
+     */
     public Board getBoard() {
         return board;
     }
 
-    public void createNewGame(Map<String, ? extends Object> settings)
-            throws BoardCreateUnable, SquareWrongValueException {
+    /**
+     * Set the game's board
+     * @param board the object that want to set
+     */
+    public void setBoard(Board board) {
+        // set board
+        this.board = board;
+    }
 
-        // get settings
-        int boardWidth = new Integer(settings.get("width").toString());
-        int boardHeight = new Integer(settings.get("height").toString());
-        long boardMineQuantity = new Long(settings.get("mine_quantity").toString());
+    /**
+     * Begin run game
+     * @throws Exception raise when game have error
+     */
+    protected void run() throws Exception {
 
-        // create new board
-        board = new Board(boardHeight, boardWidth, boardMineQuantity);
+        // while game is not exit, run the game
+        while (!this.isGameExit()) {
+
+            // display the main menu
+            this.showMainMenu();
+
+            // while game is not exit, begin play game
+            if (!this.isGameExit()) {
+
+                // create new game
+                this.createNewGame(settings);
+
+                try {
+
+                    // display game's board
+                    this.gameView.displayBoard(board);
+
+                    // play game
+                    do {
+                        this.play();
+                    } while (!this.isGameEnd());
+
+                } catch (GameException e) {
+                    // show the game message when have game error
+                    this.gameView.showMessage(e.getMessage());
+                }
+
+            }
+
+        }
 
     }
 
-    public PlayStatus openSquare(int row, int col)
-            throws SquareWrongValueException,
-            SquareCheckedException,
-            SquareOpenedException,
-            BoardOutOfBoundException {
+    /**
+     * Show the game menu
+     * @throws IOException raise when interact with user error
+     */
+    protected abstract void showMainMenu() throws IOException;
 
-        return this.board.openSquare(row, col);
-    }
+    /**
+     * Create the new game
+     * @param settings
+     * @throws GameException
+     */
+    protected abstract void createNewGame(Map<String, String> settings)
+            throws GameException;
 
-    public void toggleMineCheck(int row, int col)
-            throws BoardOutOfBoundException,
-                   SquareOpenedException {
+    /**
+     * The play function
+     * @throws GameException raise when have in game error
+     * @throws IOException raise when interact with user error
+     */
+    protected abstract void play() throws GameException, IOException;
 
-        this.board.toggleMineCheckSquare(row, col);
-    }
+    /**
+     * Check is game end or not
+     * @return boolean is game and or not
+     */
+    protected abstract boolean isGameEnd();
 
-    public abstract void initialize() throws IOException;
+    /**
+     * Check is user's want to exit the game
+     * @return boolean is game exit or not
+     */
+    protected abstract boolean isGameExit();
 
 }
