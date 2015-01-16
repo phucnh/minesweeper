@@ -868,7 +868,7 @@ public class BoardTest {
         grid[3][3] = createNumberSquare((byte) 1);
         grid[3][4] = createNumberSquare((byte) 1);
         grid[3][5] = createNumberSquare((byte) 2);
-        grid[3][7] = createNumberSquare((byte) 2);
+        grid[3][7] = createNumberSquare((byte) 1);
 
         grid[4][1] = createNumberSquare((byte) 1);
         grid[4][3] = createNumberSquare((byte) 1);
