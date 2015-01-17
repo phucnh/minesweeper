@@ -44,13 +44,6 @@ public abstract class GameController {
         settings.put("width", "5");
         settings.put("mine_quantity", "5");
 
-        // run game
-        try {
-            this.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -74,7 +67,7 @@ public abstract class GameController {
      * Begin run game
      * @throws Exception raise when game have error
      */
-    protected void run() throws Exception {
+    public void run() throws Exception {
 
         // while game is not exit, run the game
         while (!this.isGameExit()) {
