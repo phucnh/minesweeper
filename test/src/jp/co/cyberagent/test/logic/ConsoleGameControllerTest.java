@@ -11,6 +11,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
@@ -27,8 +30,47 @@ public class ConsoleGameControllerTest {
     }
 
     @After
-    public void cleanUP() {
+    public void cleanUp() {
         System.setOut(null);
+    }
+
+    @Test
+    public void testCreateNewGameSuccessfully() {
+
+        try {
+
+            // create the game controller
+            ConsoleGameController controller = new ConsoleGameController();
+
+            // ensure controller not null
+            assertNotNull(controller);
+
+            // ensure game board is not created
+            assertNull(controller.getBoard());
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "15");
+            settings.put("width", "25");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // ensure the board has been created
+            assertNotNull(controller.getBoard());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
     }
 
     @Test
