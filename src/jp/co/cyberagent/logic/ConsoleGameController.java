@@ -85,7 +85,7 @@ public class ConsoleGameController extends GameController {
         do {
             squareChosen = (String) this.gameView.chooseSquare();
 
-        } while (!validateChosenquareInput(squareChosen));
+        } while (!validateChosenSquareInput(squareChosen));
 
         // when input "0", play end, back to main menu
         if (squareChosen.equals("0")) {
@@ -204,7 +204,7 @@ public class ConsoleGameController extends GameController {
      * Validate the chosen square input
      * @throws IOException
      */
-    private boolean validateChosenquareInput(String input) throws IOException {
+    private boolean validateChosenSquareInput(String input) throws IOException {
 
         // validate user input
         // ensure user input is not empty
