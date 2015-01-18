@@ -590,4 +590,236 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test validate chosen square input
+     * When user input match with pattern, return true
+     * Valid pattern: "0$|^[a-z]\\d+$".
+     * Input 0 for exit choose square
+     * Input match with "^[a-z]\d+$" for chosen square
+     * Example:
+     *  Valid: 0, a1, b10...
+     *  Invalid: 1, a, $, ?a10
+     */
+    @Test
+    public void testValidateChosenSquareInputValidCase() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        try {
+
+            // get function
+            Method validateChosenSquareInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateChosenSquareInput",
+                            String.class
+                    );
+            validateChosenSquareInput.setAccessible(true);
+
+            // test validate chosen square input, input 0
+            assertEquals(
+                    true,
+                    validateChosenSquareInput.invoke(controller, "0")
+            );
+
+            // test validate chosen square input, input a1
+            assertEquals(
+                    true,
+                    validateChosenSquareInput.invoke(controller, "a1")
+            );
+
+            // test validate chosen square input, input b10
+            assertEquals(
+                    true,
+                    validateChosenSquareInput.invoke(controller, "b10")
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+    }
+
+    /**
+     * Test validate chosen square input
+     * When user input match with pattern, return true
+     * Valid pattern: "0$|^[a-z]\\d+$".
+     * Input 0 for exit choose square
+     * Input match with "^[a-z]\d+$" for chosen square
+     * Example:
+     *  Valid: 0, a1, b10...
+     *  Invalid: 1, a, $, ?a10
+     */
+    @Test
+    public void testValidateChosenSquareInputInValidCase() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateChosenSquareInput = null;
+        try {
+            validateChosenSquareInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateChosenSquareInput",
+                            String.class
+                    );
+            validateChosenSquareInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate chosen square input, input 1
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareInput.invoke(controller, "1")
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input a
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareInput.invoke(controller, "a")
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input $
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareInput.invoke(controller, "$")
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input ?a10
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareInput.invoke(controller, "?a10")
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input empty
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareInput.invoke(controller, "")
+            );
+
+            // ensure the error message
+            assertEquals("Please, choose square for open\n", out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    private ConsoleGameController createTheController() {
+
+        // create the game board
+        // create the game controller
+        ConsoleGameController controller = new ConsoleGameController();
+
+        // ensure controller not null
+        assertNotNull(controller);
+
+        // ensure game board is not created
+        assertNull(controller.getBoard());
+
+        // prepare settings for create new game
+        HashMap<String, String> settings = new HashMap<String, String>();
+        settings.put("height", "15");
+        settings.put("width", "20");
+        settings.put("mine_quantity", "15");
+
+        try {
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+         return controller;
+
+    }
+
 }
