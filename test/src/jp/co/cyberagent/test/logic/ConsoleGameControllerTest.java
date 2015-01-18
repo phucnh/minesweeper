@@ -1,7 +1,10 @@
 package jp.co.cyberagent.test.logic;
 
+import jp.co.cyberagent.components.Board;
 import jp.co.cyberagent.components.PlayStatus;
+import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 import jp.co.cyberagent.logic.ConsoleGameController;
+import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,45 +38,9 @@ public class ConsoleGameControllerTest {
         System.setOut(null);
     }
 
-    @Test
-    public void testCreateNewGameSuccessfully() {
-
-        try {
-
-            // create the game controller
-            ConsoleGameController controller = new ConsoleGameController();
-
-            // ensure controller not null
-            assertNotNull(controller);
-
-            // ensure game board is not created
-            assertNull(controller.getBoard());
-
-            // prepare settings for create new game
-            HashMap<String, String> settings = new HashMap<String, String>();
-            settings.put("height", "15");
-            settings.put("width", "25");
-            settings.put("mine_quantity", "15");
-
-            // get create new game function
-            Method createNewGame = ConsoleGameController
-                    .class
-                    .getDeclaredMethod("createNewGame", Map.class);
-            createNewGame.setAccessible(true);
-
-            // run create new game
-            createNewGame.invoke(controller, settings);
-
-            // ensure the board has been created
-            assertNotNull(controller.getBoard());
-
-        } catch (Exception e) {
-            // test case not pass
-            fail();
-        }
-
-    }
-
+    /**
+     * Test create Controller object successfully
+     */
     @Test
     public void testCreateConsoleControllerSuccessfully() {
 
@@ -108,6 +76,251 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test create new game successfully
+     */
+    @Test
+    public void testCreateNewGameSuccessfully() {
+
+        try {
+
+            // create the game controller
+            ConsoleGameController controller = new ConsoleGameController();
+
+            // ensure controller not null
+            assertNotNull(controller);
+
+            // ensure game board is not created
+            assertNull(controller.getBoard());
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "15");
+            settings.put("width", "25");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // ensure the board has been created
+            assertNotNull(controller.getBoard());
+
+            // get board
+            Board board = controller.getBoard();
+
+            // ensure board size
+            // get board size
+            int[] boardSize = board.getSize();
+
+            // ensure height
+            assertEquals(15, boardSize[0]);
+
+            // ensure width
+            assertEquals(25, boardSize[1]);
+
+            // ensure mine quantity
+            Field bMineQty = Board.class.getDeclaredField("mineQty");
+            bMineQty.setAccessible(true);
+            assertEquals(15l, bMineQty.get(board));
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+    }
+
+    /**
+     * Test create new game failed,
+     * height and width out of bound
+     */
+    @Test
+    public void testCreateNewGameFailedSizeOutOfBound() {
+
+        // create the game controller
+        ConsoleGameController controller = new ConsoleGameController();
+
+        // ensure controller not null
+        assertNotNull(controller);
+
+        // ensure game board is not created
+        assertNull(controller.getBoard());
+
+        // create new game with settings height less than 0
+        try {
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "-1");
+            settings.put("width", "25");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // test case not pass
+            fail();
+
+        } catch (Exception e) {
+
+            // ensure exception is InvocationTargetException
+            assertTrue(e instanceof InvocationTargetException);
+            InvocationTargetException itEx = (InvocationTargetException) e;
+            Throwable targetEx = itEx.getTargetException();
+
+            // ensure target is instance of BoardCreateUnable
+            assertTrue(targetEx instanceof BoardCreateUnable);
+
+            // ensure exception message
+            assertEquals(
+                    String.format("Board's height must be from %d to %d",
+                            Board.MIN_HEIGHT,
+                            Board.MAX_HEIGHT),
+                    targetEx.getMessage()
+            );
+
+        }
+
+        // create new game with settings height is board's max height
+        try {
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "60000");
+            settings.put("width", "25");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // test case not pass
+            fail();
+
+        } catch (Exception e) {
+
+            // ensure exception is InvocationTargetException
+            assertTrue(e instanceof InvocationTargetException);
+            InvocationTargetException itEx = (InvocationTargetException) e;
+            Throwable targetEx = itEx.getTargetException();
+
+            // ensure target is instance of BoardCreateUnable
+            assertTrue(targetEx instanceof BoardCreateUnable);
+
+            // ensure exception message
+            assertEquals(
+                    String.format("Board's height must be from %d to %d",
+                            Board.MIN_HEIGHT,
+                            Board.MAX_HEIGHT),
+                    targetEx.getMessage()
+            );
+
+        }
+
+        // create new game with settings width less than 0
+        try {
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "50");
+            settings.put("width", "-1");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // test case not pass
+            fail();
+
+        } catch (Exception e) {
+
+            // ensure exception is InvocationTargetException
+            assertTrue(e instanceof InvocationTargetException);
+            InvocationTargetException itEx = (InvocationTargetException) e;
+            Throwable targetEx = itEx.getTargetException();
+
+            // ensure target is instance of BoardCreateUnable
+            assertTrue(targetEx instanceof BoardCreateUnable);
+
+            // ensure exception message
+            assertEquals(
+                    String.format("Board's width must be from %d to %d",
+                            Board.MIN_HEIGHT,
+                            Board.MAX_HEIGHT),
+                    targetEx.getMessage()
+            );
+
+        }
+
+        // create new game with settings width is 27
+        try {
+
+            // prepare settings for create new game
+            HashMap<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "50");
+            settings.put("width", "27");
+            settings.put("mine_quantity", "15");
+
+            // get create new game function
+            Method createNewGame = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("createNewGame", Map.class);
+            createNewGame.setAccessible(true);
+
+            // run create new game
+            createNewGame.invoke(controller, settings);
+
+            // test case not pass
+            fail();
+
+        } catch (Exception e) {
+
+            // ensure exception is InvocationTargetException
+            assertTrue(e instanceof InvocationTargetException);
+            InvocationTargetException itEx = (InvocationTargetException) e;
+            Throwable targetEx = itEx.getTargetException();
+
+            // ensure target is instance of ConsoleControllerException
+            assertTrue(targetEx instanceof ConsoleControllerException);
+
+            // ensure exception message
+            assertEquals(
+                    "In console mode, board width " +
+                            "must less than or equal 26 columns",
+                    targetEx.getMessage()
+            );
+
+        }
+
+    }
+
+    /**
+     * Test show main menu and get the user's input.
+     * When user input 0, exit game
+     */
     @Test
     public void testShowMainMenuInput0GameExit() {
 
@@ -157,6 +370,10 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test show main menu and get the user's input.
+     * When user input 1, game continue
+     */
     @Test
     public void testShowMainMenuInput1GameContinue() {
 
@@ -202,6 +419,10 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test show main menu and get the user's input.
+     * When user input another option (not 0 or 1), game exit
+     */
     @Test
     public void testShowMainMenuInputOtherGameExit() {
 
@@ -245,6 +466,10 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test show main menu and get the user's input.
+     * When user input empty, show the input error message
+     */
     @Test
     public void testShowMainMenuInputEmpty() {
 
@@ -303,6 +528,10 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test show main menu and get the user's input.
+     * When user input non numeric, show the input error message
+     */
     @Test
     public void testShowMainMenuInputNotNumeric() {
 

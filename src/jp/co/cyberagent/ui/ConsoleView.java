@@ -30,9 +30,6 @@ public class ConsoleView extends GameView {
         int height = size[0];
         int width = size[1];
 
-        if (width > 26)
-            throw new ConsoleViewException("In console mode, board width must less than or equal 26 columns");
-
         // print board to screen
         buffWriter.write(' ');
         for (int c = 0; c < width; c++) {
