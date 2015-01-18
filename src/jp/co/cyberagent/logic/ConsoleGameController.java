@@ -11,6 +11,7 @@ import jp.co.cyberagent.components.Board;
 import jp.co.cyberagent.components.exceptions.*;
 import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.exceptions.GameException;
+import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import jp.co.cyberagent.ui.ConsoleView;
 import jp.co.cyberagent.ui.exceptions.ViewException;
 
@@ -85,7 +86,7 @@ public class ConsoleGameController extends GameController {
         do {
             squareChosen = (String) this.gameView.chooseSquare();
 
-        } while (!validateChosenquareInput(squareChosen));
+        } while (!validateChosenSquareInput(squareChosen));
 
         // when input "0", play end, back to main menu
         if (squareChosen.equals("0")) {
@@ -187,13 +188,21 @@ public class ConsoleGameController extends GameController {
      */
     @Override
     protected void createNewGame(Map<String, String> settings)
-            throws SquareWrongValueException, BoardCreateUnable {
+            throws SquareWrongValueException,
+                   BoardCreateUnable,
+                   ConsoleControllerException {
 
         // get settings
         int boardWidth = new Integer(settings.get("width"));
         int boardHeight = new Integer(settings.get("height"));
         long boardMineQuantity =
                 new Long(settings.get("mine_quantity"));
+
+        if (boardWidth > 26)
+            throw new ConsoleControllerException(
+                    "In console mode, board width " +
+                    "must less than or equal 26 columns"
+            );
 
         // create new board
         this.setBoard(new Board(boardHeight, boardWidth, boardMineQuantity));
@@ -204,7 +213,7 @@ public class ConsoleGameController extends GameController {
      * Validate the chosen square input
      * @throws IOException
      */
-    private boolean validateChosenquareInput(String input) throws IOException {
+    private boolean validateChosenSquareInput(String input) throws IOException {
 
         // validate user input
         // ensure user input is not empty

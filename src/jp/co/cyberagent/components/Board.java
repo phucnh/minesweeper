@@ -42,7 +42,7 @@ public class Board {
 
         //.validate the board input
         // validate height
-        if (height < Board.MIN_HEIGHT || height > Board.MAX_HEIGHT)
+        if (height < Board.MIN_HEIGHT || height >= Board.MAX_HEIGHT)
             throw new BoardCreateUnable(
                     String.format("Board's height must be from %d to %d",
                                    Board.MIN_HEIGHT,
@@ -50,7 +50,7 @@ public class Board {
             );
 
         // validate width
-        if (width < Board.MIN_WIDTH || width > Board.MAX_WIDTH)
+        if (width < Board.MIN_WIDTH || width >= Board.MAX_WIDTH)
             throw new BoardCreateUnable(
                     String.format("Board's width must be from %d to %d",
                                    Board.MIN_WIDTH,
