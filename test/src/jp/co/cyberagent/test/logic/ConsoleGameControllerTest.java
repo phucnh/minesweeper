@@ -609,15 +609,21 @@ public class ConsoleGameControllerTest {
         // ensure controller is not null
         assertNotNull(controller);
 
+        // get function
+        Method validateChosenSquareInput =  null;
         try {
-
-            // get function
-            Method validateChosenSquareInput =
+            validateChosenSquareInput =
                     ConsoleGameController.class.getDeclaredMethod(
                             "validateChosenSquareInput",
                             String.class
                     );
             validateChosenSquareInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        try {
 
             // test validate chosen square input, input 0
             assertEquals(
@@ -775,6 +781,167 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals("Please, choose square for open\n", out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    /**
+     * Test validate chosen square mode input
+     * When user input match with pattern, return true
+     * Valid pattern: "o$|x$". Input must be 'o' or 'x'
+     * Example:
+     *  Valid: 'o' or 'x'
+     *  Invalid: when input different 'o' or 'x'
+     */
+    @Test
+    public void testValidateChosenSquareModeInputValidCase() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateChosenSquareModeInput =  null;
+        try {
+            validateChosenSquareModeInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateChosenSquareModeInput",
+                            String.class
+                    );
+            validateChosenSquareModeInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        try {
+
+            // test validate chosen square input, input 'o'
+            assertEquals(
+                    true,
+                    validateChosenSquareModeInput.invoke(controller, "o")
+            );
+
+            // test validate chosen square input, input 'x'
+            assertEquals(
+                    true,
+                    validateChosenSquareModeInput.invoke(controller, "x")
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+    }
+
+    /**
+     * Test validate chosen square mode input
+     * When user input match with pattern, return true
+     * Valid pattern: "o$|x$". Input must be 'o' or 'x'
+     * Example:
+     *  Valid: 'o' or 'x'
+     *  Invalid: when input different 'o' or 'x'
+     */
+    @Test
+    public void testValidateChosenSquareModeInputInValidCase() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateChosenSquareModeInput =  null;
+        try {
+            validateChosenSquareModeInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateChosenSquareModeInput",
+                            String.class
+                    );
+            validateChosenSquareModeInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate chosen square input, input 'o123'
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareModeInput.invoke(controller, "o123")
+            );
+
+            // ensure the error message
+            assertEquals("Please, input o or x value\n", out.toString());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input 'a1'
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareModeInput.invoke(controller, "a1")
+            );
+
+            // ensure the error message
+            assertEquals("Please, input o or x value\n", out.toString());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input 'ox'
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareModeInput.invoke(controller, "ox")
+            );
+
+            // ensure the error message
+            assertEquals("Please, input o or x value\n", out.toString());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate chosen square input, input empty
+        try {
+
+            assertEquals(
+                    false,
+                    validateChosenSquareModeInput.invoke(controller, "")
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, choose square for open or" +
+                            " toggle mine check\n",
+                    out.toString()
             );
 
         } catch (Exception e) {
