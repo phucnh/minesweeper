@@ -7,3 +7,6 @@
 
 # IntelliJ
 out/
+
+# Build directory
+build/
