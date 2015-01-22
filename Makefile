@@ -5,9 +5,6 @@ SRC_PATH = src
 # build target directory
 BUILD_PATH = build
 
-# jar path
-JAR_PATH = jar
-
 # jar name
 JAR_NAME = minesweeper.jar
 
@@ -37,8 +34,10 @@ JVM = 1.7
 	$(JAVA_HOME)/bin/$(JC) $(JFLAGS) -target $(JVM) -d $(BUILD_PATH) -sourcepath $(SRC_PATH) $*.java
 
 # main source
-MAIN = jp/co/cyberagent/Main
+PACKAGE = jp/co/cyberagent
+MAIN = $(PACKAGE)/Main
 MAIN_SOURCE := src/$(MAIN).java
+TEST_SOURCE := test/src/$(PACKAGE)/test/NumberSquareTest.java
 
 .PHONY: clean run
 
