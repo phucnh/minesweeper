@@ -30,9 +30,6 @@ public class ConsoleView extends GameView {
         int height = size[0];
         int width = size[1];
 
-        if (width > 26)
-            throw new ConsoleViewException("In console mode, board width must less than or equal 26 columns");
-
         // print board to screen
         buffWriter.write(' ');
         for (int c = 0; c < width; c++) {
@@ -84,33 +81,11 @@ public class ConsoleView extends GameView {
     }
 
     @Override
-    public void displaySquare(Square square) throws IOException {
+    public void displayChosenSquare(Board board, int chosenRow, int chosenCol)
+            throws IOException, ConsoleViewException {
 
-        if (!square.isOpened()) {
-
-            if (square.isMineChecked())
-                buffWriter.write('x');
-            else
-                buffWriter.write('?');
-
-        } else {
-
-            // display square components, correspond with type of square
-            if (square instanceof EmptySquare) {
-                buffWriter.write(' ');
-
-            } else if (square instanceof MineSquare) {
-
-                buffWriter.write('x');
-
-            } else if (square instanceof NumberSquare) {
-
-                NumberSquare numSquare = (NumberSquare) square;
-                buffWriter.write(numSquare.getValue().toString());
-
-            }
-
-        }
+        // in console mode, when display chosen square, re-display board
+        this.displayBoard(board);
 
     }
 
@@ -150,5 +125,35 @@ public class ConsoleView extends GameView {
     private String getCharForNumber(int i) {
         // alphabet letter is from 97 (a) to 122 (z)
         return i >= 0 && i < 26 ? String.valueOf((char)(i + 97)) : null;
+    }
+
+    private void displaySquare(Square square) throws IOException {
+
+        if (!square.isOpened()) {
+
+            if (square.isMineChecked())
+                buffWriter.write('x');
+            else
+                buffWriter.write('?');
+
+        } else {
+
+            // display square components, correspond with type of square
+            if (square instanceof EmptySquare) {
+                buffWriter.write(' ');
+
+            } else if (square instanceof MineSquare) {
+
+                buffWriter.write('x');
+
+            } else if (square instanceof NumberSquare) {
+
+                NumberSquare numSquare = (NumberSquare) square;
+                buffWriter.write(numSquare.getValue().toString());
+
+            }
+
+        }
+
     }
 }
