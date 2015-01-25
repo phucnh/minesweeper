@@ -323,7 +323,7 @@ public class ConsoleGameController extends GameController {
 
         // validate mine quantity
         boolean isMineQtyValid = validateGameSettingItem(
-                "mine_quantity",
+                "mine quantity",
                 settings.get(MINE_QUANTITY));
         if (!isMineQtyValid)
             return false;

@@ -355,7 +355,8 @@ public class ConsoleGameControllerTest {
             assertEquals(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n",
+                            "1. Create new game\n" +
+                            "2. Setting\n",
                     out.toString());
 
             // ensure game is exit
@@ -406,11 +407,100 @@ public class ConsoleGameControllerTest {
             assertEquals(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n",
+                            "1. Create new game\n" +
+                            "2. Setting\n",
                     out.toString());
 
-            // ensure game is exit
+            // ensure game is not exit
             assertFalse(isGameExit.getBoolean(controller));
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+    }
+
+    /**
+     * Test show main menu and get the user's input.
+     * When user input 2, game setting
+     */
+    @Test
+    public void testShowMainMenuInput2GameSetting() {
+
+        // test show main menu, when input 2, game setting
+        try {
+
+            // set input
+            // input choose game setting
+            StringBuilder input = new StringBuilder("2\n");
+
+            // input height
+            input.append("25\n");
+
+            // input width
+            input.append("15\n");
+
+            // input mine quantity
+            input.append("20");
+
+            // set input stream
+            ByteArrayInputStream in =
+                    new ByteArrayInputStream(input.toString().getBytes());
+            System.setIn(in);
+
+            // create the game controller
+            ConsoleGameController controller = new ConsoleGameController();
+
+            // ensure is not exit game
+            Field isGameExit =
+                    ConsoleGameController.class.getDeclaredField("isGameExit");
+            isGameExit.setAccessible(true);
+
+            // get show main menu function
+            Method showMainMenu = ConsoleGameController
+                    .class
+                    .getDeclaredMethod("showMainMenu");
+            showMainMenu.setAccessible(true);
+
+            // run show main menu
+            showMainMenu.invoke(controller);
+
+            // ensure expected message
+            // build the expected message
+            StringBuilder expected = new StringBuilder(
+                    "Please choose below options\n" +
+                    "0. Exit game\n" +
+                    "1. Create new game\n" +
+                    "2. Setting\n"
+            );
+
+            // ensure choose height message
+            expected.append("Please, set the height\n");
+
+            // ensure choose width message
+            expected.append("Please, set the width\n");
+
+            // ensure choose mine quantity message
+            expected.append("Please, set the mine quantity\n");
+
+            // ensure output message
+            assertEquals(expected.toString(), out.toString());
+
+            // ensure game is not exit
+            assertFalse(isGameExit.getBoolean(controller));
+
+            // ensure game setting has been set
+            Map<String, String> settings = controller.getSettings();
+
+            // ensure setting height
+            assertEquals("25", settings.get("height"));
+
+            // ensure setting width
+            assertEquals("15", settings.get("width"));
+
+            // ensure setting mine quantity
+            assertEquals("20", settings.get("mine_quantity"));
 
         } catch (Exception e) {
             // test case not pass
@@ -450,7 +540,8 @@ public class ConsoleGameControllerTest {
             assertEquals(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n",
+                            "1. Create new game\n" +
+                            "2. Setting\n",
                     out.toString());
 
             // ensure game is exit
@@ -505,7 +596,9 @@ public class ConsoleGameControllerTest {
             StringBuilder expected = new StringBuilder(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n");
+                            "1. Create new game\n" +
+                            "2. Setting\n"
+            );
 
             // show error message when input the empty
             expected.append("Please, choose one of main menu option\n");
@@ -514,7 +607,8 @@ public class ConsoleGameControllerTest {
             expected.append(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n"
+                            "1. Create new game\n" +
+                            "2. Setting\n"
             );
 
             // ensure output
@@ -567,7 +661,9 @@ public class ConsoleGameControllerTest {
             StringBuilder expected = new StringBuilder(
                     "Please choose below options\n" +
                     "0. Exit game\n" +
-                    "1. Create new game\n");
+                    "1. Create new game\n" +
+                    "2. Setting\n"
+            );
 
             // show error message when input the non numeric
             expected.append("Please, input the number\n");
@@ -576,7 +672,8 @@ public class ConsoleGameControllerTest {
             expected.append(
                     "Please choose below options\n" +
                     "0. Exit game\n" +
-                    "1. Create new game\n"
+                    "1. Create new game\n" +
+                    "2. Setting\n"
             );
 
             // ensure output
@@ -610,7 +707,7 @@ public class ConsoleGameControllerTest {
         assertNotNull(controller);
 
         // get function
-        Method validateChosenSquareInput =  null;
+        Method validateChosenSquareInput = null;
         try {
             validateChosenSquareInput =
                     ConsoleGameController.class.getDeclaredMethod(
@@ -810,7 +907,7 @@ public class ConsoleGameControllerTest {
         assertNotNull(controller);
 
         // get function
-        Method validateChosenSquareModeInput =  null;
+        Method validateChosenSquareModeInput = null;
         try {
             validateChosenSquareModeInput =
                     ConsoleGameController.class.getDeclaredMethod(
@@ -862,7 +959,7 @@ public class ConsoleGameControllerTest {
         assertNotNull(controller);
 
         // get function
-        Method validateChosenSquareModeInput =  null;
+        Method validateChosenSquareModeInput = null;
         try {
             validateChosenSquareModeInput =
                     ConsoleGameController.class.getDeclaredMethod(
@@ -941,6 +1038,282 @@ public class ConsoleGameControllerTest {
             assertEquals(
                     "Please, choose square for open or" +
                             " toggle mine check\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    @Test
+    public void testValidateGameSettingInputValidCase() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateGameSettingInput = null;
+        try {
+            validateGameSettingInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateGameSettingInput",
+                            Map.class
+                    );
+            validateGameSettingInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate game setting input, input numeric
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "150");
+            settings.put("width", "20");
+            settings.put("mine_quantity", "200");
+
+            assertEquals(
+                    true,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    @Test
+    public void testValidateGameSettingInputInValidHeight() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateGameSettingInput = null;
+        try {
+            validateGameSettingInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateGameSettingInput",
+                            Map.class
+                    );
+            validateGameSettingInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate game setting input, input height is empty
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "");
+            settings.put("width", "16");
+            settings.put("mine_quantity", "200");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, give input for game's height\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate game setting input, input height is not numeric
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "a120");
+            settings.put("width", "24");
+            settings.put("mine_quantity", "200");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input number for game's height\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    @Test
+    public void testValidateGameSettingInputInValidWidth() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateGameSettingInput = null;
+        try {
+            validateGameSettingInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateGameSettingInput",
+                            Map.class
+                    );
+            validateGameSettingInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate game setting input, input width is empty
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "105");
+            settings.put("width", "");
+            settings.put("mine_quantity", "200");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, give input for game's width\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate game setting input, input width is not numeric
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "120");
+            settings.put("width", "11a@");
+            settings.put("mine_quantity", "200");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input number for game's width\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+    }
+
+    @Test
+    public void testValidateGameSettingInputInValidMineQuantity() {
+
+        // create the game controller
+        ConsoleGameController controller = this.createTheController();
+
+        // ensure controller is not null
+        assertNotNull(controller);
+
+        // get function
+        Method validateGameSettingInput = null;
+        try {
+            validateGameSettingInput =
+                    ConsoleGameController.class.getDeclaredMethod(
+                            "validateGameSettingInput",
+                            Map.class
+                    );
+            validateGameSettingInput.setAccessible(true);
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test validate game setting input, input mine quantity is empty
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "10");
+            settings.put("width", "20");
+            settings.put("mine_quantity", "");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, give input for game's mine quantity\n",
+                    out.toString()
+            );
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test validate game setting input, input mine quantity is not numeric
+        try {
+
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put("height", "12");
+            settings.put("width", "15");
+            settings.put("mine_quantity", "a$$$");
+
+            assertEquals(
+                    false,
+                    validateGameSettingInput.invoke(controller, settings)
+            );
+
+            // ensure the error message
+            assertEquals(
+                    "Please, input number for game's mine quantity\n",
                     out.toString()
             );
 
