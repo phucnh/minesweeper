@@ -19,6 +19,11 @@ import java.util.Map;
  */
 public abstract class GameController {
 
+    // the game settings constant
+    public final String SETTING_HEIGHT = "height";
+    public final String SETTING_WIDTH = "width";
+    public final String MINE_QUANTITY = "mine_quantity";
+
     // the game board
     private Board board;
 
@@ -41,9 +46,9 @@ public abstract class GameController {
 
         // initialize the basic settings
         this.settings = new HashMap<String, String>();
-        settings.put("height", "5");
-        settings.put("width", "5");
-        settings.put("mine_quantity", "5");
+        settings.put(SETTING_HEIGHT, "5");
+        settings.put(SETTING_WIDTH, "5");
+        settings.put(MINE_QUANTITY, "5");
 
     }
 
@@ -65,6 +70,23 @@ public abstract class GameController {
     }
 
     /**
+     * Get game's settings.
+     * Board's height, board's width, board's mine quantity
+     * @return Map<String, Stirng> game's settings
+     */
+    public Map<String, String> getSettings() {
+        return settings;
+    }
+
+    /**
+     * Set the game's settings
+     * @param settings the game's settings
+     */
+    public void setSettings(Map<String, String> settings) {
+        this.settings = settings;
+    }
+
+    /**
      * Begin run game
      * @throws Exception raise when game have error
      */
@@ -73,16 +95,16 @@ public abstract class GameController {
         // while game is not exit, run the game
         while (!this.isGameExit()) {
 
-            // display the main menu
-            this.showMainMenu();
+            try {
 
-            // while game is not exit, begin play game
-            if (!this.isGameExit()) {
+                // display the main menu
+                this.showMainMenu();
 
-                // create new game
-                this.createNewGame(settings);
+                // while game is not exit, begin play game
+                if (!this.isGameExit()) {
 
-                try {
+                    // create new game
+                    this.createNewGame(settings);
 
                     // display game's board
                     this.gameView.displayBoard(board);
@@ -92,11 +114,10 @@ public abstract class GameController {
                         this.play();
                     } while (!this.isGameEnd());
 
-                } catch (GameException e) {
-                    // show the game message when have game error
-                    this.gameView.showMessage(e.getMessage());
                 }
-
+            } catch (GameException e) {
+                // show the game message when have game error
+                this.gameView.showMessage(e.getMessage());
             }
 
         }
@@ -111,7 +132,7 @@ public abstract class GameController {
 
     /**
      * Create the new game
-     * @param settings
+     * @param settings the game's settings
      * @throws GameException
      */
     protected abstract void createNewGame(Map<String, String> settings)

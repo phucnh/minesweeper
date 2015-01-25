@@ -63,6 +63,22 @@ public class ConsoleGameController extends GameController {
             this.isGameExit = true;
         } else if (mainMenuOpt.equals("1")) {
             this.isGameExit = false;
+        } else if (mainMenuOpt.equals("2")) {
+
+            // get the game setting from user
+            Map<String, String> settings;
+
+            do {
+                // show setting
+                settings = this.gameView.gameSetting();
+
+            } while (!this.validateGameSettingInput(settings));
+
+            // set the game settings
+            this.setSettings(settings);
+
+            this.isGameExit = false;
+
         } else {
             this.isGameExit = true;
         }
@@ -193,10 +209,10 @@ public class ConsoleGameController extends GameController {
                    ConsoleControllerException {
 
         // get settings
-        int boardWidth = new Integer(settings.get("width"));
-        int boardHeight = new Integer(settings.get("height"));
+        int boardWidth = new Integer(settings.get(SETTING_WIDTH));
+        int boardHeight = new Integer(settings.get(SETTING_HEIGHT));
         long boardMineQuantity =
-                new Long(settings.get("mine_quantity"));
+                new Long(settings.get(MINE_QUANTITY));
 
         if (boardWidth > 26)
             throw new ConsoleControllerException(
@@ -282,6 +298,59 @@ public class ConsoleGameController extends GameController {
         // ensure user input is valid pattern
         if (!input.matches("o$|x$")) {
             this.gameView.showMessage("Please, input o or x value");
+
+            return false;
+        }
+
+        return true;
+
+    }
+
+    /**
+     * Validate the game's settings input
+     * @throws IOException
+     */
+    private boolean validateGameSettingInput(Map<String, String> settings)
+            throws IOException {
+
+        // validate height
+        if (!validateGameSettingItem("height", settings.get(SETTING_HEIGHT)))
+            return false;
+
+        // validate width
+        if (!validateGameSettingItem("width", settings.get(SETTING_WIDTH)))
+            return false;
+
+        // validate mine quantity
+        boolean isMineQtyValid = validateGameSettingItem(
+                "mine quantity",
+                settings.get(MINE_QUANTITY));
+        if (!isMineQtyValid)
+            return false;
+
+        return true;
+
+    }
+
+    /**
+     * Validate each item in game's settings
+     * @throws IOException
+     */
+    private boolean validateGameSettingItem(String item, String input)
+            throws IOException {
+
+        // validate user input
+        // ensure user input is not empty
+        if (input.isEmpty()) {
+            this.gameView.showMessage("Please, give input for game's " + item);
+
+            return false;
+        }
+
+        // ensure user input is valid pattern, can input number only
+        if (!input.matches("\\d+")) {
+            this.gameView.showMessage(
+                    "Please, input number for game's " + item);
 
             return false;
         }

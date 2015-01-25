@@ -13,6 +13,7 @@ import java.io.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -29,7 +30,7 @@ public class ConsoleViewTest {
     }
 
     @After
-    public void cleanUP() {
+    public void cleanUp() {
         System.setOut(null);
     }
 
@@ -58,7 +59,8 @@ public class ConsoleViewTest {
             assertEquals(
                     "Please choose below options\n" +
                             "0. Exit game\n" +
-                            "1. Create new game\n",
+                            "1. Create new game\n" +
+                            "2. Setting\n",
                     out.toString());
 
             // ensure chosen value
@@ -67,6 +69,64 @@ public class ConsoleViewTest {
         } catch (Exception e) {
             // test case not pass
             fail();
+        } finally {
+            System.setIn(System.in);
+        }
+
+    }
+
+    /**
+     * Test game settings function.
+     * Show the input request message
+     * Get input from user
+     */
+    @Test
+    public void testGameSettingSuccessfully() {
+
+        try {
+
+            // set input
+            // input height
+            StringBuilder input = new StringBuilder("10\n");
+
+            // input width
+            input.append("15\n");
+
+            // input mine quantity
+            input.append("20");
+
+            // set input stream
+            ByteArrayInputStream in =
+                    new ByteArrayInputStream(input.toString().getBytes());
+            System.setIn(in);
+
+            // create a view
+            ConsoleView view = new ConsoleView(
+                    new BufferedReader(new InputStreamReader(System.in)),
+                    new BufferedWriter(new OutputStreamWriter(System.out))
+            );
+
+            // test function
+            Map<String, String> settings = view.gameSetting();
+
+            // ensure game setting message
+            assertEquals(
+                    "Please, set the height\n" +
+                            "Please, set the width\n" +
+                            "Please, set the mine quantity\n",
+                    out.toString());
+
+            // ensure input setting height
+            assertEquals("10", settings.get("height"));
+
+            // ensure input setting width
+            assertEquals("15", settings.get("width"));
+
+            // ensure input setting mine quantity
+            assertEquals("20", settings.get("mine_quantity"));
+
+        } catch (Exception e) {
+            // test case not pass
         } finally {
             System.setIn(System.in);
         }
