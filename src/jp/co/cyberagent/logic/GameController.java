@@ -1,12 +1,8 @@
 package jp.co.cyberagent.logic;
 
 import jp.co.cyberagent.components.Board;
-import jp.co.cyberagent.components.PlayStatus;
-import jp.co.cyberagent.components.exceptions.*;
 import jp.co.cyberagent.exceptions.GameException;
-import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import jp.co.cyberagent.ui.GameView;
-import jp.co.cyberagent.ui.exceptions.ViewException;
 
 import java.io.IOException;
 import java.util.HashMap;

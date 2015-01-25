@@ -1050,6 +1050,11 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test validate game setting input in valid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputValidCase() {
 
@@ -1095,6 +1100,11 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test validate game setting's height input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidHeight() {
 
@@ -1172,6 +1182,11 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test validate game setting's width input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidWidth() {
 
@@ -1249,6 +1264,11 @@ public class ConsoleGameControllerTest {
 
     }
 
+    /**
+     * Test validate game setting's mine quantity input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidMineQuantity() {
 

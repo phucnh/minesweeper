@@ -52,8 +52,8 @@ public class ConsoleView extends GameView {
 
         // print board to screen
         // print white space
-        int numberCharOfHeight = Integer.toString(height).length();
-        this.printWhiteSpace(numberCharOfHeight);
+        int numberCharOfHeight = Integer.toString(height - 1).length();
+        this.printWhiteSpace(numberCharOfHeight + 1);
 
         // print column index
         for (int c = 0; c < width; c++) {
@@ -71,7 +71,7 @@ public class ConsoleView extends GameView {
             // print the white space if number character of row
             // is not same with height
             this.printWhiteSpace(
-                    numberCharOfHeight - Integer.toString(r).length());
+                    numberCharOfHeight - Integer.toString(r).length() + 1);
 
             // display the square
             for (int c = 0; c < width; c++) {

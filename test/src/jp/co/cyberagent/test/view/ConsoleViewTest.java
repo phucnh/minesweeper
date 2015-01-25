@@ -371,23 +371,44 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are closed
             assertEquals(
-                    " abcdefgh\n" +
-                            "0????????\n" +
-                            "1????????\n" +
-                            "2????????\n" +
-                            "3????????\n" +
-                            "4????????\n" +
-                            "5????????\n" +
-                            "6????????\n" +
-                            "7????????\n",
+                    "  abcdefgh\n" +
+                            "0 ????????\n" +
+                            "1 ????????\n" +
+                            "2 ????????\n" +
+                            "3 ????????\n" +
+                            "4 ????????\n" +
+                            "5 ????????\n" +
+                            "6 ????????\n" +
+                            "7 ????????\n",
                     out.toString());
+
+            // reset output
+            out.reset();
 
             // open all squares
             for (int r = 0; r < 8; r++) {
                 for (int c = 0; c < 8; c++) {
-                    board.openSquare(r, c);
+
+                    if (!board.getSquare(r, c).isOpened())
+                        board.openSquare(r, c);
                 }
             }
+
+            // test function
+            view.displayBoard(board);
+
+            // ensure display board when all squares are opened
+            assertEquals(
+                    "  abcdefgh\n" +
+                            "0     111 \n" +
+                            "1     1x1 \n" +
+                            "2     1221\n" +
+                            "3 11 112x1\n" +
+                            "4 x1 1x211\n" +
+                            "5 22112321\n" +
+                            "6 1x322xx2\n" +
+                            "7 12xx223x\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
@@ -488,15 +509,15 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are opened
             assertEquals(
-                    " abcdefgh\n" +
-                            "0    111 \n" +
-                            "1    1x1 \n" +
-                            "2    1221\n" +
-                            "311 112x1\n" +
-                            "4x1 1x211\n" +
-                            "522112321\n" +
-                            "61x322xx2\n" +
-                            "712xx223x\n",
+                    "  abcdefgh\n" +
+                            "0     111 \n" +
+                            "1     1x1 \n" +
+                            "2     1221\n" +
+                            "3 11 112x1\n" +
+                            "4 x1 1x211\n" +
+                            "5 22112321\n" +
+                            "6 1x322xx2\n" +
+                            "7 12xx223x\n",
                     out.toString());
         } catch (Exception e) {
             // test case not pass
