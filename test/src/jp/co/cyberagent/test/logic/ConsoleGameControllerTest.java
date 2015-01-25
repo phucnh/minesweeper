@@ -198,7 +198,7 @@ public class ConsoleGameControllerTest {
 
             // prepare settings for create new game
             HashMap<String, String> settings = new HashMap<String, String>();
-            settings.put("height", "60000");
+            settings.put("height", "60001");
             settings.put("width", "25");
             settings.put("mine_quantity", "15");
 
