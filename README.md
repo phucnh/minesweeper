@@ -3,7 +3,7 @@ This is the minesweeper game that has been made for [CyberAgent](http://www.cybe
 
 The game has been made using [Java language](https://java.com/en/), test on [Java Development Kit, Java SE 7, Update 72](http://www.oracle.com/technetwork/java/javase/7u72-relnotes-2296190.html) and Java Runtime Environment, Java SE 7, update 76 [Click here for download jre 7u76](http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html)
 
-This game had buit on console base, for run it, please read the User Guide below.
+This game had built on console base, for run it, please read the User Guide below.
 
 ## User Guide
 ### Run game from Java Archive file
@@ -43,9 +43,9 @@ For build and run this game from source code, please follow below step
 	```
 
 ## Test
-_Will update in next verison_
+_Will update in next version
 
-When help any probleam, please contact to me
+When this game has any problem, please contact to me
 
 Skype: phucnh89
 
