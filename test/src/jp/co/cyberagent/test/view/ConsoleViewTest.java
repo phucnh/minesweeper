@@ -1,10 +1,11 @@
-package jp.co.cyberagent.view;
+package jp.co.cyberagent.test.view;
 
 import static org.mockito.Mockito.*;
 
 import jp.co.cyberagent.components.*;
 import jp.co.cyberagent.ui.ConsoleView;
 
+import jp.co.cyberagent.ui.GameView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -301,6 +302,7 @@ public class ConsoleViewTest {
     @Test
     public void testShowMessageSuccessfully() {
 
+        // test show error message
         try {
             // create a view
             ConsoleView view = new ConsoleView(
@@ -309,11 +311,38 @@ public class ConsoleViewTest {
             );
 
             // test function
-            view.showMessage("test show message");
+            view.showMessage("test show error message", GameView.MSG_ERR);
 
             // ensure choose square mode
             assertEquals(
-                    "test show message\n",
+                    ConsoleView.ANSI_RED +
+                            "test show error message" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test show warning message
+        try {
+            // create a view
+            ConsoleView view = new ConsoleView(
+                    new BufferedReader(new InputStreamReader(System.in)),
+                    new BufferedWriter(new OutputStreamWriter(System.out))
+            );
+
+            // test function
+            view.showMessage("test show warning message", GameView.MSG_WRN);
+
+            // ensure choose square mode
+            assertEquals(
+                    ConsoleView.ANSI_YELLOW +
+                            "test show warning message" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString());
 
         } catch (Exception e) {

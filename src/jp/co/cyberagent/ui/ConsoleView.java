@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class ConsoleView extends GameView {
 
+    // ANSI escape code, using for print color message
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
     // buffer reader for get user input
     private BufferedReader buffReader;
 
@@ -24,6 +29,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Create the console view, set the buffered reader, and writer
+     *
      * @param buffReader buffered reader for read user input
      * @param buffWriter buffered writer for show the message to user
      */
@@ -36,8 +42,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement display board game
+     *
      * Display game's board in console
+     *
      * @param board the game's board
+     *
      * @throws IOException raise when have interact with user error
      * @throws BoardException raise when have the board error, board is
      *         out of bound
@@ -89,8 +98,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement main menu.
+     *
      * Display the main menu, get user input
+     *
      * @return String the user input
+     *
      * @throws IOException raise when have user interact error
      */
     @Override
@@ -114,8 +126,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement game setting
+     *
      * Display the setting request input message, get input from user
+     *
      * @return Map<String, String> the game's setting that get from user
+     *
      * @throws IOException raise when have user interact error
      */
     @Override
@@ -202,21 +217,39 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement show message
+     *
      * Display the message to user
+     *
      * @param message the message that want to display
+     * @param type the type of message (error, warning)
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
-    public void showMessage(String message) throws IOException {
-        buffWriter.write(message);
+    public void showMessage(String message, String type) throws IOException {
+
+        // message color
+        String color = "";
+
+        // get color
+        if (type == MSG_ERR)
+            color = ANSI_RED;
+        else if (type == MSG_WRN)
+            color = ANSI_YELLOW;
+
+        buffWriter.write(color + message + ANSI_RESET);
         buffWriter.newLine();
         buffWriter.flush();
     }
 
     /**
      * Implement choose square mode
+     *
      * Display the choose square mode message, get chosen mode from user
+     * The square mode is open square or toggle mine check
+     *
      * @return String the square mode, open or mine check
+     *
      * @throws IOException raise when have the board exception
      */
     @Override

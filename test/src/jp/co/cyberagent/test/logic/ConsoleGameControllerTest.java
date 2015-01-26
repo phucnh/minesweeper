@@ -5,6 +5,7 @@ import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 import jp.co.cyberagent.logic.ConsoleGameController;
 import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
+import jp.co.cyberagent.ui.ConsoleView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -601,7 +602,10 @@ public class ConsoleGameControllerTest {
             );
 
             // show error message when input the empty
-            expected.append("Please, choose one of main menu option\n");
+            expected.append(
+                    ConsoleView.ANSI_RED +
+                    "Please, choose one of main menu option"+
+                    ConsoleView.ANSI_RESET +"\n");
 
             // re-display main menu request input message
             expected.append(
@@ -666,7 +670,10 @@ public class ConsoleGameControllerTest {
             );
 
             // show error message when input the non numeric
-            expected.append("Please, input the number\n");
+            expected.append(
+                    ConsoleView.ANSI_RED +
+                    "Please, input the number" +
+                    ConsoleView.ANSI_RESET + "\n");
 
             // re-display main menu request input message
             expected.append(
@@ -790,8 +797,10 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -812,8 +821,10 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -834,8 +845,10 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -856,8 +869,10 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)"+
+                            ConsoleView.ANSI_RESET +"\n",
                     out.toString()
             );
 
@@ -877,7 +892,12 @@ public class ConsoleGameControllerTest {
             );
 
             // ensure the error message
-            assertEquals("Please, choose square for open\n", out.toString()
+            assertEquals(
+                    ConsoleView.ANSI_RED +
+                            "Please, choose square for open" +
+                            ConsoleView.ANSI_RESET +
+                            "\n",
+                    out.toString()
             );
 
         } catch (Exception e) {
@@ -981,7 +1001,12 @@ public class ConsoleGameControllerTest {
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString()
+            );
 
         } catch (Exception e) {
             // test case not pass
@@ -999,7 +1024,11 @@ public class ConsoleGameControllerTest {
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
@@ -1017,7 +1046,11 @@ public class ConsoleGameControllerTest {
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
@@ -1036,8 +1069,10 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, choose square for open or" +
-                            " toggle mine check\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, choose square for open or" +
+                            " toggle mine check" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1143,7 +1178,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's height\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's height" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1169,7 +1206,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's height\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input number for game's height" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1225,7 +1264,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's width\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's width" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1251,7 +1292,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's width\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input number for game's width" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1307,7 +1350,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's mine quantity\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's mine quantity"+
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
@@ -1333,7 +1378,9 @@ public class ConsoleGameControllerTest {
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's mine quantity\n",
+                    ConsoleView.ANSI_RED +
+                            "Please, input number for game's mine quantity" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
