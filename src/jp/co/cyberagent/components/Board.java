@@ -1,6 +1,7 @@
 package jp.co.cyberagent.components;
 
 import java.util.Random;
+import java.util.Stack;
 
 import jp.co.cyberagent.components.exceptions.*;
 
@@ -42,7 +43,7 @@ public class Board {
 
         //.validate the board input
         // validate height
-        if (height < Board.MIN_HEIGHT || height >= Board.MAX_HEIGHT)
+        if (height < Board.MIN_HEIGHT || height > Board.MAX_HEIGHT)
             throw new BoardCreateUnable(
                     String.format("Board's height must be from %d to %d",
                                    Board.MIN_HEIGHT,
@@ -50,7 +51,7 @@ public class Board {
             );
 
         // validate width
-        if (width < Board.MIN_WIDTH || width >= Board.MAX_WIDTH)
+        if (width < Board.MIN_WIDTH || width > Board.MAX_WIDTH)
             throw new BoardCreateUnable(
                     String.format("Board's width must be from %d to %d",
                                    Board.MIN_WIDTH,
@@ -143,11 +144,11 @@ public class Board {
         // get square
         Square square = this.grid[row][col];
 
-        // open square
-        square.open();
+        // open square, if square is empty square, open related square
+        int openedCount = openSquareIterator(row, col);
 
-        // update opened square
-        ++this.openedMineCount;
+        // update opened count
+        this.openedMineCount += openedCount;
 
         // check if lose, return immediately
         if (square instanceof MineSquare) {
@@ -155,16 +156,174 @@ public class Board {
         }
 
         // check is win, return immediately
-        // TODO: optimize this?
         if (this.openedMineCount.equals(height * width - mineQty)) {
             return PlayStatus.WIN;
         }
 
-        // TODO: implement related square
-
         return PlayStatus.NORMAL;
 
     }
+
+    /**
+     * Open square and related square(s), non recursive version
+     *
+     * @param row the square row index
+     * @param col the square column index
+     *
+     * @return int count of opened square
+     *
+     * @throws BoardOutOfBoundException
+     * @throws SquareCheckedException
+     * @throws SquareOpenedException
+     */
+    private int openSquareIterator(int row, int col)
+            throws BoardOutOfBoundException,
+                   SquareCheckedException,
+                   SquareOpenedException {
+
+        int openedCount = 0;
+
+        // check square index
+        checkChooseSquareIndex(row, col);
+
+        // define the stack, store squares that will be open will
+        Stack<int[]> squareStack = new Stack<int[]>();
+
+        // push chosen square for preparing open
+        squareStack.push(new int[] {row, col});
+
+        // open square and related square(s)
+        while (!squareStack.empty()) {
+
+            // get square
+            int[] index = squareStack.pop();
+            int r = index[0];
+            int c = index[1];
+            Square square = getSquare(r, c);
+
+            // open square
+            try {
+                // open square
+                square.open();
+
+                // update opened count
+                ++openedCount;
+            } catch (SquareCheckedException e) {
+                // open the chosen square error, throw exception
+                if (openedCount == 0)
+                    throw e;
+            } catch (SquareOpenedException e) {
+                // open the chosen square error, throw exception
+                if (openedCount == 0)
+                    throw e;
+            }
+
+            // when square is empty square, open the related square(s)
+            if (square instanceof EmptySquare) {
+
+                // open square follow the direction
+                for (Direction dir : Direction.values()) {
+                    // get neighbour index
+                    int[] neighborIndex = getNeighborIndex(r, c, dir);
+
+                    // push square to stack for preparing open square
+                    try {
+                        checkChooseSquareIndex(neighborIndex[0], neighborIndex[1]);
+
+                        if (!getSquare(neighborIndex[0], neighborIndex[1]).isOpened())
+                            squareStack.push(neighborIndex);
+
+                    } catch (BoardOutOfBoundException e) {
+                        // pass the exception, do nothing
+                    }
+
+                }
+
+            }
+
+        }
+
+        return openedCount;
+
+    }
+
+    /**
+     * Open square and related square(s), recursive version
+     *
+     * @param row the square row index
+     * @param col the square column index
+     * @param count the accumulate variable, store opened square
+     *
+     * @return int count of opened square
+     *
+     * @throws BoardOutOfBoundException
+     * @throws SquareCheckedException
+     * @throws SquareOpenedException
+     */
+//    private int openSquareIterator(int row, int col, int count)
+//            throws BoardOutOfBoundException,
+//                   SquareCheckedException,
+//                   SquareOpenedException {
+//
+//        try {
+//
+//            // check square index
+//            checkChooseSquareIndex(row, col);
+//
+//            // get square
+//            Square square = this.getSquare(row, col);
+//
+//            int openedCount = count;
+//
+//            // open square
+//            square.open();
+//
+//            // update opened count
+//            ++openedCount;
+//
+//            // when the square is empty square, open related square
+//            if (square instanceof EmptySquare) {
+//                for (Direction dir : Direction.values()) {
+//
+//                    // get neighbour index
+//                    int[] neighbourIndex = this.getNeighborIndex(row, col, dir);
+//
+//                    // open the neighbour empty square
+//                    openedCount = openSquareIterator(
+//                            neighbourIndex[0],
+//                            neighbourIndex[1],
+//                            openedCount
+//                    );
+//
+//                }
+//            }
+//
+//            return openedCount;
+//
+//        } catch (BoardOutOfBoundException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        } catch (SquareCheckedException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        } catch (SquareOpenedException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        }
+//
+//    }
 
     /**
      * Check square index, ensure index in valid
@@ -235,7 +394,6 @@ public class Board {
         } else {
             // set square is mine square
             this.grid[row][col] = new MineSquare();
-
             // fill mine to another
             fillMine(++numMine);
         }
@@ -264,45 +422,17 @@ public class Board {
 
     /**
      * Get neighbor around square by direction
-     * @param row
-     * @param col
-     * @param direction
+     * @param row the square row index
+     * @param col the square column index
+     * @param direction the direction from the square that want to get neighbor
      * @return the neighbor square by direction
      */
     private Square getNeighborSquare(int row, int col, Direction direction) {
 
-        int r = row;
-        int c = col;
-
-        // find the square follow direction
-        switch (direction) {
-            case TOP_LEFT:
-                r--; c--;
-                break;
-            case TOP:
-                r--;
-                break;
-            case TOP_RIGHT:
-                r--; c++;
-                break;
-            case RIGHT:
-                c++;
-                break;
-            case BOTTOM_RIGHT:
-                r++; c--;
-                break;
-            case BOTTOM:
-                r++;
-                break;
-            case BOTTOM_LEFT:
-                r++; c--;
-                break;
-            case LEFT:
-                c--;
-                break;
-            default:
-                break;
-        }
+        // get the neighbour index
+        int[] neighbourIndex = getNeighborIndex(row, col, direction);
+        int r = neighbourIndex[0];
+        int c = neighbourIndex[1];
 
         // check is row and column out of bound
         // if out of bound, return null
@@ -318,6 +448,51 @@ public class Board {
             return null;
         }
 
+    }
+
+    /**
+     * Get neighbor index around square by direction
+     * @param row the square row index
+     * @param col the square column index
+     * @param direction the direction from the square that want to get neighbor
+     * @return int[] the neighbour square index int[row, column]
+     */
+    private int[] getNeighborIndex(int row, int col, Direction direction) {
+
+        int r = row;
+        int c = col;
+
+        // find the square index follow direction
+        switch (direction) {
+            case TOP_LEFT:
+                r--; c--;
+                break;
+            case TOP:
+                r--;
+                break;
+            case TOP_RIGHT:
+                r--; c++;
+                break;
+            case RIGHT:
+                c++;
+                break;
+            case BOTTOM_RIGHT:
+                r++; c++;
+                break;
+            case BOTTOM:
+                r++;
+                break;
+            case BOTTOM_LEFT:
+                r++; c--;
+                break;
+            case LEFT:
+                c--;
+                break;
+            default:
+                break;
+        }
+
+        return new int[] {r, c};
     }
 
     /**

@@ -1,10 +1,11 @@
-package jp.co.cyberagent.view;
+package jp.co.cyberagent.test.view;
 
 import static org.mockito.Mockito.*;
 
 import jp.co.cyberagent.components.*;
 import jp.co.cyberagent.ui.ConsoleView;
 
+import jp.co.cyberagent.ui.GameView;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -301,6 +302,7 @@ public class ConsoleViewTest {
     @Test
     public void testShowMessageSuccessfully() {
 
+        // test show error message
         try {
             // create a view
             ConsoleView view = new ConsoleView(
@@ -309,11 +311,38 @@ public class ConsoleViewTest {
             );
 
             // test function
-            view.showMessage("test show message");
+            view.showMessage("test show error message", GameView.MSG_ERR);
 
             // ensure choose square mode
             assertEquals(
-                    "test show message\n",
+                    ConsoleView.ANSI_RED +
+                            "test show error message" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        } finally {
+            out.reset();
+        }
+
+        // test show warning message
+        try {
+            // create a view
+            ConsoleView view = new ConsoleView(
+                    new BufferedReader(new InputStreamReader(System.in)),
+                    new BufferedWriter(new OutputStreamWriter(System.out))
+            );
+
+            // test function
+            view.showMessage("test show warning message", GameView.MSG_WRN);
+
+            // ensure choose square mode
+            assertEquals(
+                    ConsoleView.ANSI_YELLOW +
+                            "test show warning message" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString());
 
         } catch (Exception e) {
@@ -371,23 +400,44 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are closed
             assertEquals(
-                    " abcdefgh\n" +
-                            "0????????\n" +
-                            "1????????\n" +
-                            "2????????\n" +
-                            "3????????\n" +
-                            "4????????\n" +
-                            "5????????\n" +
-                            "6????????\n" +
-                            "7????????\n",
+                    "  abcdefgh\n" +
+                            "0 ????????\n" +
+                            "1 ????????\n" +
+                            "2 ????????\n" +
+                            "3 ????????\n" +
+                            "4 ????????\n" +
+                            "5 ????????\n" +
+                            "6 ????????\n" +
+                            "7 ????????\n",
                     out.toString());
+
+            // reset output
+            out.reset();
 
             // open all squares
             for (int r = 0; r < 8; r++) {
                 for (int c = 0; c < 8; c++) {
-                    board.openSquare(r, c);
+
+                    if (!board.getSquare(r, c).isOpened())
+                        board.openSquare(r, c);
                 }
             }
+
+            // test function
+            view.displayBoard(board);
+
+            // ensure display board when all squares are opened
+            assertEquals(
+                    "  abcdefgh\n" +
+                            "0     111 \n" +
+                            "1     1x1 \n" +
+                            "2     1221\n" +
+                            "3 11 112x1\n" +
+                            "4 x1 1x211\n" +
+                            "5 22112321\n" +
+                            "6 1x322xx2\n" +
+                            "7 12xx223x\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
@@ -488,15 +538,15 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are opened
             assertEquals(
-                    " abcdefgh\n" +
-                            "0    111 \n" +
-                            "1    1x1 \n" +
-                            "2    1221\n" +
-                            "311 112x1\n" +
-                            "4x1 1x211\n" +
-                            "522112321\n" +
-                            "61x322xx2\n" +
-                            "712xx223x\n",
+                    "  abcdefgh\n" +
+                            "0     111 \n" +
+                            "1     1x1 \n" +
+                            "2     1221\n" +
+                            "3 11 112x1\n" +
+                            "4 x1 1x211\n" +
+                            "5 22112321\n" +
+                            "6 1x322xx2\n" +
+                            "7 12xx223x\n",
                     out.toString());
         } catch (Exception e) {
             // test case not pass

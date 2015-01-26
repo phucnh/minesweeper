@@ -459,6 +459,7 @@ public class BoardTest {
     @Test
     public void testOpenSquareSuccessfully() {
 
+        // test open a empty square, the related will be opened
         try {
             // create board
             Board board = new Board(8, 8, 10);
@@ -473,7 +474,7 @@ public class BoardTest {
 
             // test open a empty square
             // get empty square that row is 0, column is 0
-            Square emptySquare = board.getSquare(0, 0);
+            Square emptySquare = board.getSquare(0, 7);
 
             // ensure square is empty square object
             assertTrue(emptySquare instanceof EmptySquare);
@@ -482,7 +483,7 @@ public class BoardTest {
             assertFalse(emptySquare.isOpened());
 
             // open square
-            PlayStatus playStatus = board.openSquare(0, 0);
+            PlayStatus playStatus = board.openSquare(0, 7);
 
             // ensure square is opened
             assertTrue(emptySquare.isOpened());
@@ -490,7 +491,52 @@ public class BoardTest {
             // ensure play status is normal
             assertEquals(PlayStatus.NORMAL, playStatus);
 
-            // test open a mine square
+            // ensure related square is opened,
+            // another square is not open
+            int[] boardSize = board.getSize();
+            int height = boardSize[0];
+            int width = boardSize[1];
+
+            for (int r = 0; r < height; r++) {
+                for (int c = 0; c < width; c++) {
+
+                    if ((r == 0 && c == 7) ||
+                            (r == 1 && c == 7) ||
+                            (r == 0 && c == 6) ||
+                            (r == 1 && c == 6) ||
+                            (r == 2 && c == 6) ||
+                            (r == 2 && c == 7)) {
+                        assertTrue(board.getSquare(r, c).isOpened());
+                    } else {
+                        assertFalse(board.getSquare(r, c).isOpened());
+                    }
+
+                }
+            }
+
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test open a mine square
+        try {
+
+            // create board
+            Board board = new Board(8, 8, 10);
+
+            // ensure board not null
+            assertNotNull(board);
+
+            // get grid attribute
+            Field bGrid = Board.class.getDeclaredField("grid");
+
+            // set access to grid
+            bGrid.setAccessible(true);
+
+            // set grid the defined game board
+            bGrid.set(board, makeBoard());
+
             // get mine square that row is 1, column is 5
             Square mineSquare = board.getSquare(1, 5);
 
@@ -501,15 +547,52 @@ public class BoardTest {
             assertFalse(mineSquare.isOpened());
 
             // open square
-            playStatus = board.openSquare(1, 5);
+            PlayStatus playStatus = board.openSquare(1, 5);
 
-            // ensure square is opened
-            assertTrue(mineSquare.isOpened());
+            // ensure mine square is opened,
+            // another square is not open
+            int[] boardSize = board.getSize();
+            int height = boardSize[0];
+            int width = boardSize[1];
+
+            for (int r = 0; r < height; r++) {
+                for (int c = 0; c < width; c++) {
+
+                    if (r == 1 && c == 5) {
+                        assertTrue(board.getSquare(r, c).isOpened());
+                    } else {
+                        assertFalse(board.getSquare(r, c).isOpened());
+                    }
+
+                }
+            }
 
             // ensure play status is lose
             assertEquals(PlayStatus.LOSE, playStatus);
 
-            // test open a number square
+        } catch (Exception e) {
+            // test case not pass
+            fail();
+        }
+
+        // test open a number square
+        try {
+
+            // create board
+            Board board = new Board(8, 8, 10);
+
+            // ensure board not null
+            assertNotNull(board);
+
+            // get grid attribute
+            Field bGrid = Board.class.getDeclaredField("grid");
+
+            // set access to grid
+            bGrid.setAccessible(true);
+
+            // set grid the defined game board
+            bGrid.set(board, makeBoard());
+
             // get number square that row is 0, column is 4
             Square numSquare = board.getSquare(0, 4);
 
@@ -520,14 +603,28 @@ public class BoardTest {
             assertFalse(numSquare.isOpened());
 
             // open square
-            playStatus = board.openSquare(0, 4);
+            PlayStatus playStatus = board.openSquare(0, 4);
 
-            // ensure square is opened
-            assertTrue(numSquare.isOpened());
+            // ensure number square is opened,
+            // another square is not open
+            int[] boardSize = board.getSize();
+            int height = boardSize[0];
+            int width = boardSize[1];
+
+            for (int r = 0; r < height; r++) {
+                for (int c = 0; c < width; c++) {
+
+                    if (r == 0 && c == 4) {
+                        assertTrue(board.getSquare(r, c).isOpened());
+                    } else {
+                        assertFalse(board.getSquare(r, c).isOpened());
+                    }
+
+                }
+            }
 
             // ensure play status is normal
             assertEquals(PlayStatus.NORMAL, playStatus);
-
 
         } catch (Exception e) {
             // test case not pass
@@ -568,7 +665,7 @@ public class BoardTest {
             doNotOpen[9] = new int[] {7, 7};
 
             // add a square to do not open list, if when open this, win game
-            doNotOpen[10] = new int[] {0, 4};
+            doNotOpen[10] = new int[] {0, 5};
 
             // open the remaining squares
             for (int r = 0; r < 8; r++) {
@@ -577,21 +674,25 @@ public class BoardTest {
                     int[] index = {r, c};
 
                     if (!isInList(doNotOpen, index)) {
+
                         // open square
-                        board.openSquare(r, c);
+                        if (!board.getSquare(r, c).isOpened()) {
+                            board.openSquare(r, c);
+                        }
 
                         // ensure each square is opened
                         assertTrue(board.getSquare(r, c).isOpened());
+
                     }
 
                 }
             }
 
-            // open the last number square that row is 0, column is 4
-            PlayStatus status = board.openSquare(0, 4);
+            // open the last number square that row is 0, column is 5
+            PlayStatus status = board.openSquare(0, 5);
 
             // ensure square is opened
-            assertTrue(board.getSquare(0, 4).isOpened());
+            assertTrue(board.getSquare(0, 5).isOpened());
 
             // ensure play status is win
             assertEquals(PlayStatus.WIN, status);
@@ -1036,7 +1137,7 @@ public class BoardTest {
                 c++;
                 break;
             case BOTTOM_RIGHT:
-                r++; c--;
+                r++; c++;
                 break;
             case BOTTOM:
                 r++;

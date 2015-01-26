@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import jp.co.cyberagent.components.Board;
@@ -13,7 +14,6 @@ import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.exceptions.GameException;
 import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import jp.co.cyberagent.ui.ConsoleView;
-import jp.co.cyberagent.ui.exceptions.ViewException;
 
 /**
  * Created by phucnh on 15/01/02.
@@ -62,6 +62,16 @@ public class ConsoleGameController extends GameController {
         if (mainMenuOpt.equals("0")) {
             this.isGameExit = true;
         } else if (mainMenuOpt.equals("1")) {
+
+            // default setting
+            Map<String, String> settings = new HashMap<String, String>();
+            settings.put(SETTING_HEIGHT, "5");
+            settings.put(SETTING_WIDTH, "5");
+            settings.put(MINE_QUANTITY, "5");
+
+            // set the game setting is default
+            this.setSettings(settings);
+
             this.isGameExit = false;
         } else if (mainMenuOpt.equals("2")) {
 
@@ -90,12 +100,11 @@ public class ConsoleGameController extends GameController {
      * Do the game play logic
      * @throws BoardException raise when have board's exception
      * @throws SquareException raise when have square's exception
-     * @throws ViewException raise when have view's exception
      * @throws IOException raise when have interact with user error
      */
     @Override
     protected void play()
-            throws BoardException, SquareException, ViewException, IOException {
+            throws BoardException, SquareException, IOException {
 
         // show user message for choosing the square and get user's input
         String squareChosen;
