@@ -1,6 +1,7 @@
 package jp.co.cyberagent.components;
 
 import java.util.Random;
+import java.util.Stack;
 
 import jp.co.cyberagent.components.exceptions.*;
 
@@ -144,7 +145,7 @@ public class Board {
         Square square = this.grid[row][col];
 
         // open square, if square is empty square, open related square
-        int openedCount = openSquareIterator(row, col, 0);
+        int openedCount = openSquareIterator(row, col);
 
         // update opened count
         this.openedMineCount += openedCount;
@@ -164,79 +165,165 @@ public class Board {
     }
 
     /**
-     * Recursive open square
+     * Open square and related square(s), non recursive version
+     *
      * @param row the square row index
      * @param col the square column index
-     * @param count the accumulate variable, store opened square
+     *
      * @return int count of opened square
+     *
      * @throws BoardOutOfBoundException
      * @throws SquareCheckedException
      * @throws SquareOpenedException
      */
-    private int openSquareIterator(int row, int col, int count)
+    private int openSquareIterator(int row, int col)
             throws BoardOutOfBoundException,
                    SquareCheckedException,
                    SquareOpenedException {
 
-        try {
+        int openedCount = 0;
 
-            // check square index
-            checkChooseSquareIndex(row, col);
+        // check square index
+        checkChooseSquareIndex(row, col);
+
+        // define the stack, store squares that will be open will
+        Stack<int[]> squareStack = new Stack<int[]>();
+
+        // push chosen square for preparing open
+        squareStack.push(new int[] {row, col});
+
+        // open square and related square(s)
+        while (!squareStack.empty()) {
 
             // get square
-            Square square = this.getSquare(row, col);
-
-            int openedCount = count;
+            int[] index = squareStack.pop();
+            int r = index[0];
+            int c = index[1];
+            Square square = getSquare(r, c);
 
             // open square
-            square.open();
+            try {
+                // open square
+                square.open();
 
-            // update opened count
-            ++openedCount;
-
-            // when the square is empty square, open related square
-            if (square instanceof EmptySquare) {
-                for (Direction dir : Direction.values()) {
-
-                    // get neighbour index
-                    int[] neighbourIndex = this.getNeighborIndex(row, col, dir);
-
-                    // open the neighbour empty square
-                    openedCount = openSquareIterator(
-                            neighbourIndex[0],
-                            neighbourIndex[1],
-                            openedCount
-                    );
-
-                }
+                // update opened count
+                ++openedCount;
+            } catch (SquareCheckedException e) {
+                // open the chosen square error, throw exception
+                if (openedCount == 0)
+                    throw e;
+            } catch (SquareOpenedException e) {
+                // open the chosen square error, throw exception
+                if (openedCount == 0)
+                    throw e;
             }
 
-            return openedCount;
+            // when square is empty square, open the related square(s)
+            if (square instanceof EmptySquare) {
 
-        } catch (BoardOutOfBoundException e) {
-            // if square is chosen square, throw exception,
-            // otherwise, continue open square
-            if (count == 0)
-                throw e;
+                // open square follow the direction
+                for (Direction dir : Direction.values()) {
+                    // get neighbour index
+                    int[] neighborIndex = getNeighborIndex(r, c, dir);
 
-            return count;
-        } catch (SquareCheckedException e) {
-            // if square is chosen square, throw exception,
-            // otherwise, continue open square
-            if (count == 0)
-                throw e;
+                    // push square to stack for preparing open square
+                    try {
+                        checkChooseSquareIndex(neighborIndex[0], neighborIndex[1]);
 
-            return count;
-        } catch (SquareOpenedException e) {
-            // if square is chosen square, throw exception,
-            // otherwise, continue open square
-            if (count == 0)
-                throw e;
+                        if (!getSquare(neighborIndex[0], neighborIndex[1]).isOpened())
+                            squareStack.push(neighborIndex);
 
-            return count;
+                    } catch (BoardOutOfBoundException e) {
+                        // pass the exception, do nothing
+                    }
+
+                }
+
+            }
+
         }
 
+        return openedCount;
+
     }
+
+    /**
+     * Open square and related square(s), recursive version
+     *
+     * @param row the square row index
+     * @param col the square column index
+     * @param count the accumulate variable, store opened square
+     *
+     * @return int count of opened square
+     *
+     * @throws BoardOutOfBoundException
+     * @throws SquareCheckedException
+     * @throws SquareOpenedException
+     */
+//    private int openSquareIterator(int row, int col, int count)
+//            throws BoardOutOfBoundException,
+//                   SquareCheckedException,
+//                   SquareOpenedException {
+//
+//        try {
+//
+//            // check square index
+//            checkChooseSquareIndex(row, col);
+//
+//            // get square
+//            Square square = this.getSquare(row, col);
+//
+//            int openedCount = count;
+//
+//            // open square
+//            square.open();
+//
+//            // update opened count
+//            ++openedCount;
+//
+//            // when the square is empty square, open related square
+//            if (square instanceof EmptySquare) {
+//                for (Direction dir : Direction.values()) {
+//
+//                    // get neighbour index
+//                    int[] neighbourIndex = this.getNeighborIndex(row, col, dir);
+//
+//                    // open the neighbour empty square
+//                    openedCount = openSquareIterator(
+//                            neighbourIndex[0],
+//                            neighbourIndex[1],
+//                            openedCount
+//                    );
+//
+//                }
+//            }
+//
+//            return openedCount;
+//
+//        } catch (BoardOutOfBoundException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        } catch (SquareCheckedException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        } catch (SquareOpenedException e) {
+//            // if square is chosen square, throw exception,
+//            // otherwise, continue open square
+//            if (count == 0)
+//                throw e;
+//
+//            return count;
+//        }
+//
+//    }
 
     /**
      * Check square index, ensure index in valid
