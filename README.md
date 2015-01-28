@@ -12,10 +12,14 @@ The game has compiled to Java Archive, executable file (minesweeper.jar). For ru
 1. Check out this source code, or download the jar file on repository
 
 2. Run jar file with java command
-	``` shell
-	java minesweeper.jar
+    ``` shell
+    java -jar minesweeper.jar
     ```
-	
+    
+    Or using [GNU Make](https://www.gnu.org/software/make/) for linux or mac environment
+    ``` shell
+    make run-jar
+    ```
 
 ### Run game from source code
 The source code has contain the automatic [GNU Make](https://www.gnu.org/software/make/) for linux or mac environment.
@@ -23,28 +27,81 @@ The source code has contain the automatic [GNU Make](https://www.gnu.org/softwar
 For build and run this game from source code, please follow below step
 
 1. Checkout this source code, or download the zip file
-	``` shell	
-	git checkout https://github.com/phucnh/minesweeper.git minesweeper
+    ``` shell   
+    git checkout https://github.com/phucnh/minesweeper.git minesweeper
+    cd minesweeper
     ```
-	
+    
 2. Set the JAVA_HOME environment variable
-	``` shell
-	export JAVA_HOME=<your-java-path>
-	```
+    ``` shell
+    export JAVA_HOME=<your-java-path>
+    ```
 
-	For Example
-	``` shell
-	export JAVA_HOME=/home/phucnh/jdk1.7.0_72
-	```
+    For Example
+    ``` shell
+    export JAVA_HOME=/home/phucnh/jdk1.7.0_72
+    ```
     
 3. Go to the checkout path and run the game from make file
-	``` shell
-	make run
-	```
+    ``` shell
+    make run
+    ```
 
 ## Test
-_Will update in next version
+This game has been tested by [Junit 4.2](http://junit.org/) with [Mockito](http://mockito.org) and [Java Hamcrest](http://hamcrest.org/JavaHamcrest/) on [Java Development Kit, Java SE 7, Update 72](http://www.oracle.com/technetwork/java/javase/7u72-relnotes-2296190.html) and Java Runtime Environment, Java SE 7, update 76 [Click here for download jre 7u76](http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html)
 
+All test-case has been written in document. Please, refrence to this [Google Doc](https://drive.google.com/folderview?id=0B3seRHYL3yb-bUwyX0pGUVNsUEU&usp=sharing)
+
+For testing this source code, please follow below step
+
+1. Checkout this source code, or download the zip file
+    ``` shell   
+    git checkout https://github.com/phucnh/minesweeper.git minesweeper
+    cd minesweeper
+    ```
+    
+2. Set the JAVA_HOME environment variable
+    ``` shell
+    export JAVA_HOME=<your-java-path>
+    ```
+
+    For Example
+    ``` shell
+    export JAVA_HOME=/home/phucnh/jdk1.7.0_72
+    ```
+    
+3. Go to the checkout path and run the test from make file
+    1. For run all test
+    ``` shell
+    make test
+    ```
+    
+    2. For run test on each component
+        1. Bulid the test code
+        ``` shell
+        make build-test
+        ```
+        2. Run each element test
+            - Test game's components: Board, Square
+            ``` shell
+            make test-components-board
+            make test-components-square
+            make test-components-num-square
+            ```
+            Or
+            ``` shell
+            make test-components
+            ```
+            - Test game's controller:
+            ``` shell
+            make test-controller
+            ```
+            - Test game's view
+            ```shell
+            make test-view
+            ```
+
+## Contact
 When this game has any problem, please contact to me
 
 Skype: phucnh89
