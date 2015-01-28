@@ -6,6 +6,7 @@ import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 import jp.co.cyberagent.logic.ConsoleGameController;
 import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import jp.co.cyberagent.ui.ConsoleView;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
