@@ -46,7 +46,9 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Implement the show main menu options
+     *
      * Get the user's input
+     *
      * @throws IOException raise when interact with user error
      */
     @Override
@@ -97,7 +99,9 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Implement play
+     *
      * Do the game play logic
+     *
      * @throws BoardException raise when have board's exception
      * @throws SquareException raise when have square's exception
      * @throws IOException raise when have interact with user error
@@ -167,9 +171,11 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Implement the is game end
+     *
      * Check is game end or not
      * When play status is lose, win or exit, exit game, return true
      * Otherwise when play status is normal, continue play game, return false
+     *
      * @return boolean is game and or not
      */
     @Override
@@ -197,6 +203,7 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Check is user's want to exit the game
+     *
      * @return boolean is game exit or not
      */
     @Override
@@ -206,8 +213,11 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Implement create the new
+     *
      * Correspond with the settings, create new game
+     *
      * @param settings the game's settings (width, height, mine quantity)
+     *
      * @throws SquareWrongValueException raise when set the wrong number to number square
      * @throws BoardCreateUnable raise when create the wrong board (out of height, width, mine quantity)
      */
@@ -236,6 +246,7 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Validate the chosen square input
+     *
      * @throws IOException
      */
     private boolean validateChosenSquareInput(String input) throws IOException {
@@ -262,7 +273,9 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Validate the main menu input
-     * @param input
+     *
+     * @param input the game input
+     *
      * @return
      * @throws IOException
      */
@@ -290,6 +303,7 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Validate the chosen square mode input
+     *
      * @throws IOException
      */
     private boolean validateChosenSquareModeInput(String input)
@@ -317,6 +331,7 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Validate the game's settings input
+     *
      * @throws IOException
      */
     private boolean validateGameSettingInput(Map<String, String> settings)
@@ -343,6 +358,7 @@ public class ConsoleGameController extends GameController {
 
     /**
      * Validate each item in game's settings
+     *
      * @throws IOException
      */
     private boolean validateGameSettingItem(String item, String input)
@@ -359,7 +375,7 @@ public class ConsoleGameController extends GameController {
         // ensure user input is valid pattern, can input number only
         if (!input.matches("\\d+")) {
             this.gameView.showMessage(
-                    "Please, input number for game's " + item);
+                    "Please, input numeric for game's " + item);
 
             return false;
         }
@@ -370,7 +386,9 @@ public class ConsoleGameController extends GameController {
 
     /**
      * When user input, convert the number to integer
+     *
      * @param c the user's input first character
+     *
      * @return integer the number that convert from input
      */
     private int getNumberForChar(char c) {

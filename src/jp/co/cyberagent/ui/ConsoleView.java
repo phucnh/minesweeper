@@ -167,10 +167,13 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement display the chosen square.
+     *
      * In console mode, the implement is re-display the board
+     *
      * @param board the board that want to display the chosen square
      * @param chosenRow the square's row index
      * @param chosenCol the square's column index
+     *
      * @throws IOException raise when have user interact error
      * @throws BoardException raise when have the board exception
      */
@@ -185,6 +188,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on win.
+     *
      * Display the win message to user
      */
     @Override
@@ -194,6 +198,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on lose
+     *
      * Display the lose message to user
      */
     @Override
@@ -203,8 +208,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement choose square.
+     *
      * Display the choose square request message, get chosen square from user
+     *
      * @return String the chosen square from user
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
@@ -281,7 +289,9 @@ public class ConsoleView extends GameView {
 
     /**
      * Display the square. Empty square is ' ', Number square is number,
+     *
      * Mine square is 'x'
+     *
      * @param square the square that want to display
      */
     private void displaySquare(Square square) throws IOException {

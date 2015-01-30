@@ -5,6 +5,7 @@ import jp.co.cyberagent.components.exceptions.SquareOpenedException;
 
 /**
  * Created by phucnh on 14/12/31.
+ *
  * The game's element: Square
  * This is the abstract class, when using, please implement this class
  */
@@ -25,6 +26,7 @@ public abstract class Square {
 
     /**
      * Get square's open status
+     *
      * @return boolean the square' open status. True: opened, False: not opened
      */
     public boolean isOpened() {
@@ -33,6 +35,7 @@ public abstract class Square {
 
     /**
      * Get square's mine check status
+     *
      * @return boolean the mine check status. True: checked, False: unchecked
      */
     public boolean isMineChecked() {
@@ -41,6 +44,7 @@ public abstract class Square {
 
     /**
      * Open the square
+     *
      * @throws SquareOpenedException when try to open the opened square
      * @throws SquareCheckedException when try to open the checked square
      */
@@ -65,6 +69,7 @@ public abstract class Square {
 
     /**
      * Toggle square is mine check or not
+     *
      * @throws SquareOpenedException when try to open the checked square
      */
     protected void toggleMineCheck() throws SquareOpenedException {

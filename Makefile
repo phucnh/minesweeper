@@ -114,15 +114,15 @@ testdir:
 
 # build test source
 build-test: testdir
+	make
 	@echo "create the build test folder"
-	mkdir -p ./build/test
+	mkdir -p build/test
 	@echo "compile the build source"
 	$(JAVA_HOME)/bin/$(JC) -d $(BUILD_PATH)/test \
 						-cp $(TEST_BUILD_CLASS_PATH) $(TEST_SOURCE)
 
 # test all source code
 test: testdir
-	make
 	make build-test
 	make test-controller test-view test-components
 
