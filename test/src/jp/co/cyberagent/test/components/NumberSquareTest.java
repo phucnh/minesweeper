@@ -31,17 +31,28 @@ public class NumberSquareTest {
             numSquare = constructor.newInstance((byte) 1);
 
             // ensure number square object create successfully
-            assertNotNull(numSquare);
+            assertNotNull(
+                    "Failure - Number square is null after create",
+                    numSquare
+            );
 
             // ensure number square object's elements
-            assertNotNull(numSquare.getValue());
-            assertTrue(numSquare.getValue() == 1);
-            assertFalse(numSquare.isOpened());
-            assertFalse(numSquare.isMineChecked());
+            assertTrue(
+                    "Failure - Number square value is not 1",
+                    numSquare.getValue() == 1
+            );
+            assertFalse(
+                    "Failure - After create, square had been opened",
+                    numSquare.isOpened()
+            );
+            assertFalse(
+                    "Failure - After create, square had been checked",
+                    numSquare.isMineChecked()
+            );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Create number square error " + e.getMessage());
         }
 
     }
@@ -63,7 +74,8 @@ public class NumberSquareTest {
             constructor.newInstance((byte) 0);
 
             // test case not pass
-            fail();
+            fail("Failure - Create number square with value " +
+                    "is 0 not throw to Exception");
 
         } catch (ReflectiveOperationException e) {
 
@@ -73,11 +85,17 @@ public class NumberSquareTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure SquareWrongValueException
-            assertTrue(targetEx instanceof SquareWrongValueException);
+            assertTrue(
+                    "Create number square with value is 0 not throw " +
+                            "SquareWrongValueException",
+                    targetEx instanceof SquareWrongValueException);
 
             // ensure exception message
-            assertEquals("Square's value must be from 1 to 8",
-                         targetEx.getMessage());
+            assertEquals(
+                    "Failure - Create number square with value " +
+                            "is 0 exception message wrong",
+                    "Square's value must be from 1 to 8",
+                    targetEx.getMessage());
 
         }
 
@@ -92,7 +110,8 @@ public class NumberSquareTest {
             constructor.newInstance((byte) 9);
 
             // test case not pass
-            fail();
+            fail("Failure - Create number square with value " +
+                    "is 9 not throw to Exception");
 
         } catch (ReflectiveOperationException e) {
 
@@ -102,11 +121,19 @@ public class NumberSquareTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure SquareWrongValueException
-            assertTrue(targetEx instanceof SquareWrongValueException);
+            assertTrue(
+                    "Create number square with value is 9 not throw " +
+                            "SquareWrongValueException",
+                    targetEx instanceof SquareWrongValueException
+            );
 
             // ensure exception message
-            assertEquals("Square's value must be from 1 to 8",
-                         targetEx.getMessage());
+            assertEquals(
+                    "Failure - Create number square with value " +
+                            "is 9 exception message wrong",
+                    "Square's value must be from 1 to 8",
+                    targetEx.getMessage()
+            );
 
         }
 

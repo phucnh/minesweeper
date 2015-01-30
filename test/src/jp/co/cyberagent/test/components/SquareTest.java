@@ -25,8 +25,14 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class);
 
         // test square's object elements
-        assertFalse(square.isOpened());
-        assertFalse(square.isMineChecked());
+        assertFalse(
+                "Failure - After create square, square had been opened",
+                square.isOpened()
+        );
+        assertFalse(
+                "Failure - After create square, square had been checked",
+                square.isMineChecked()
+        );
 
     }
 
@@ -40,7 +46,10 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class, Mockito.CALLS_REAL_METHODS);
 
         // ensure square is closed
-        assertFalse(square.isOpened());
+        assertFalse(
+                "Failure - After create square, square had been opened",
+                square.isOpened()
+        );
 
         // test square open method
         try {
@@ -52,10 +61,13 @@ public class SquareTest {
             method.invoke(square);
 
             // ensure square is opened
-            assertTrue(square.isOpened());
+            assertTrue(
+                    "Failure - After open square, square is not open",
+                    square.isOpened()
+            );
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Open square error " + e.getMessage());
         }
 
     }
@@ -70,7 +82,10 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class, Mockito.CALLS_REAL_METHODS);
 
         // ensure square is closed
-        assertFalse(square.isOpened());
+        assertFalse(
+                "Failure - After create square, square had been opened",
+                square.isOpened()
+        );
 
         // test square open method
         try {
@@ -82,13 +97,16 @@ public class SquareTest {
             method.invoke(square);
 
             // ensure square is opened
-            assertTrue(square.isOpened());
+            assertTrue(
+                    "Failure - Set square open attribute fail",
+                    square.isOpened()
+            );
 
             // open the opened square
             method.invoke(square);
 
             // test case not pass
-            fail();
+            fail("Failure - Open the opened square not throw exception");
 
         } catch (ReflectiveOperationException e) {
             // get InvocationTargetException's target
@@ -97,14 +115,18 @@ public class SquareTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure SquareOpenedException
-            assertTrue(targetEx instanceof SquareOpenedException);
+            assertTrue(
+                    "Failure - Exception instance is not SquareOpenedException",
+                    targetEx instanceof SquareOpenedException
+            );
 
             // ensure exception message
-            assertEquals("Square has been opened, cannot open square",
-                         targetEx.getMessage());
+            assertEquals(
+                    "Failure - Open the opened square exception message wrong",
+                    "Square has been opened, cannot open square",
+                    targetEx.getMessage()
+            );
 
-            // ensure square is opened
-            assertTrue(square.isOpened());
         }
 
     }
@@ -119,10 +141,16 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class, Mockito.CALLS_REAL_METHODS);
 
         // ensure square is closed
-        assertFalse(square.isOpened());
+        assertFalse(
+                "Failure - After create square, square had been opened",
+                square.isOpened()
+        );
 
         // ensure square is not mine checked
-        assertFalse(square.isMineChecked());
+        assertFalse(
+                "Failure - After create square, square had been checked",
+                square.isMineChecked()
+        );
 
         // test square open method
         try {
@@ -132,23 +160,20 @@ public class SquareTest {
             field.set(square, true);
 
             // ensure square is checked
-            assertTrue(square.isMineChecked());
+            assertTrue(
+                    "Failure - Set square check fail",
+                    square.isMineChecked()
+            );
 
             // get square open method
             Method method = Square.class.getDeclaredMethod("open");
             method.setAccessible(true);
 
-            // run open
-            method.invoke(square);
-
-            // ensure square is opened
-            assertTrue(square.isOpened());
-
-            // open the opened square
+            // open the checked square
             method.invoke(square);
 
             // test case not pass
-            fail();
+            fail("Failure - Open the checked square not throw exception");
 
         } catch (ReflectiveOperationException e) {
             // get InvocationTargetException's target
@@ -157,11 +182,23 @@ public class SquareTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure SquareCheckedException
-            assertTrue(targetEx instanceof SquareCheckedException);
+            assertTrue(
+                    "Failure - Exception object is not SquareCheckedException",
+                    targetEx instanceof SquareCheckedException
+            );
 
             // ensure exception message
-            assertEquals("Square has been mine marked, can not open square",
-                         targetEx.getMessage());
+            assertEquals(
+                    "Failure - Open the checked square exception message wrong",
+                    "Square has been mine marked, can not open square",
+                    targetEx.getMessage());
+
+            // ensure square is not open
+            assertFalse(
+                    "Failure - Open the square error, but square is opened",
+                    square.isOpened()
+            );
+
         }
 
     }
@@ -176,7 +213,10 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class, Mockito.CALLS_REAL_METHODS);
 
         // ensure square is not checked
-        assertFalse(square.isMineChecked());
+        assertFalse(
+                "Failure - After create square, square had been checked",
+                square.isMineChecked()
+        );
 
         // test square toggle square mine check method
         try {
@@ -188,16 +228,23 @@ public class SquareTest {
             method.invoke(square);
 
             // ensure square is checked
-            assertTrue(square.isMineChecked());
+            assertTrue(
+                    "Failure - After check square, square not check",
+                    square.isMineChecked()
+            );
 
             // run function, mark square is unchecked
             method.invoke(square);
 
             // ensure square is unchecked
-            assertFalse(square.isMineChecked());
+            assertFalse(
+                    "Failure - After un-check square, square is checked",
+                    square.isMineChecked()
+            );
+
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Toggle square error " + e.getMessage());
         }
 
     }
@@ -212,10 +259,14 @@ public class SquareTest {
         Square square = Mockito.mock(Square.class, Mockito.CALLS_REAL_METHODS);
 
         // ensure square is not opened
-        assertFalse(square.isOpened());
+        assertFalse(
+                "Failure - After create square, square had been opened",
+                square.isOpened());
 
         // ensure square is not checked
-        assertFalse(square.isMineChecked());
+        assertFalse(
+                "Failure - After create square, square had been checked",
+                square.isMineChecked());
 
         // test square toggle square mine check method
         try {
@@ -232,7 +283,7 @@ public class SquareTest {
             method.invoke(square);
 
             // test case not pass
-            fail();
+            fail("Failure - Toggle a opened square not throw exception");
 
         } catch (Exception e) {
             // get InvocationTargetException's target
@@ -241,11 +292,17 @@ public class SquareTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure SquareOpenedException
-            assertTrue(targetEx instanceof SquareOpenedException);
+            assertTrue(
+                    "Failure - Toggle an opened square " +
+                            "not throw SquareOpenedException",
+                    targetEx instanceof SquareOpenedException);
 
             // ensure exception message
-            assertEquals("Square has been opened, cannot toggle mine check",
-                         targetEx.getMessage());
+            assertEquals(
+                    "Failure - Toggle an opened square exception message wrong",
+                    "Square has been opened, cannot toggle mine check",
+                    targetEx.getMessage()
+            );
         }
 
     }

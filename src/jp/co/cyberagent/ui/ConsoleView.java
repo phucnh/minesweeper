@@ -167,10 +167,13 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement display the chosen square.
+     *
      * In console mode, the implement is re-display the board
+     *
      * @param board the board that want to display the chosen square
      * @param chosenRow the square's row index
      * @param chosenCol the square's column index
+     *
      * @throws IOException raise when have user interact error
      * @throws BoardException raise when have the board exception
      */
@@ -185,6 +188,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on win.
+     *
      * Display the win message to user
      */
     @Override
@@ -194,22 +198,27 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on lose
+     *
      * Display the lose message to user
      */
     @Override
     public void onLose() {
-        System.out.println("Oops! You opened the mine! Game over.");
+        System.out.println("Oops! You opened the mine! Game over");
     }
 
     /**
      * Implement choose square.
+     *
      * Display the choose square request message, get chosen square from user
+     *
      * @return String the chosen square from user
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
     public String chooseSquare() throws IOException {
-        buffWriter.write("Please, choose square to open or mine check (0 for back to Main Menu) ");
+        buffWriter.write("Please, choose square to open or " +
+                "mine check (0 for back to Main Menu)");
         buffWriter.newLine();
         buffWriter.flush();
         return buffReader.readLine();
@@ -232,9 +241,9 @@ public class ConsoleView extends GameView {
         String color = "";
 
         // get color
-        if (type == MSG_ERR)
+        if (type.equals(MSG_ERR))
             color = ANSI_RED;
-        else if (type == MSG_WRN)
+        else if (type.equals(MSG_WRN))
             color = ANSI_YELLOW;
 
         buffWriter.write(color + message + ANSI_RESET);
@@ -280,7 +289,9 @@ public class ConsoleView extends GameView {
 
     /**
      * Display the square. Empty square is ' ', Number square is number,
+     *
      * Mine square is 'x'
+     *
      * @param square the square that want to display
      */
     private void displaySquare(Square square) throws IOException {
