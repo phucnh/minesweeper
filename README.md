@@ -91,12 +91,12 @@ For testing this source code, please follow below step
     ```
     
 3. Go to the checkout path and run the test from make file
-    1. For run all test
+    - For run all test
     ``` shell
     make test
     ```
     
-    2. For run test on each component
+    - For run test on each component
         1. Bulid the test code
         ``` shell
         make build-test
