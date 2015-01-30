@@ -5,6 +5,8 @@ import jp.co.cyberagent.components.PlayStatus;
 import jp.co.cyberagent.components.exceptions.BoardCreateUnable;
 import jp.co.cyberagent.logic.ConsoleGameController;
 import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
+import jp.co.cyberagent.ui.ConsoleView;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
@@ -50,7 +51,10 @@ public class ConsoleGameControllerTest {
             ConsoleGameController controller = new ConsoleGameController();
 
             // ensure controller not null
-            assertNotNull(controller);
+            assertNotNull(
+                    "Failure - Create controller error, null object",
+                    controller
+            );
 
             // ensure controller attribute
             // ensure is not exit game
@@ -58,18 +62,23 @@ public class ConsoleGameControllerTest {
                     ConsoleGameController.class.getDeclaredField("isGameExit");
             isGameExit.setAccessible(true);
 
-            assertFalse(isGameExit.getBoolean(controller));
+            assertFalse(
+                    "Failure - After create controller, game exit",
+                    isGameExit.getBoolean(controller)
+            );
 
             // ensure play status is normal
             Field playStatus =
                     ConsoleGameController.class.getDeclaredField("playStatus");
             playStatus.setAccessible(true);
 
-            assertEquals(PlayStatus.NORMAL, playStatus.get(controller));
+            assertEquals(
+                    "Failure - After create controller, status is not normal",
+                    PlayStatus.NORMAL, playStatus.get(controller));
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Create controller error " + e.getMessage());
         } finally {
             System.setIn(System.in);
         }
@@ -88,10 +97,15 @@ public class ConsoleGameControllerTest {
             ConsoleGameController controller = new ConsoleGameController();
 
             // ensure controller not null
-            assertNotNull(controller);
+            assertNotNull(
+                    "Failure - Create controller error, null object",
+                    controller
+            );
 
             // ensure game board is not created
-            assertNull(controller.getBoard());
+            assertNull(
+                    "Failure - Create controller error, board is null",
+                    controller.getBoard());
 
             // prepare settings for create new game
             HashMap<String, String> settings = new HashMap<String, String>();
@@ -109,7 +123,9 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
 
             // ensure the board has been created
-            assertNotNull(controller.getBoard());
+            assertNotNull(
+                    "Failure - After create new game, board still null",
+                    controller.getBoard());
 
             // get board
             Board board = controller.getBoard();
@@ -119,19 +135,28 @@ public class ConsoleGameControllerTest {
             int[] boardSize = board.getSize();
 
             // ensure height
-            assertEquals(15, boardSize[0]);
+            assertEquals(
+                    "Failure - Get board size height is not 15",
+                    15,
+                    boardSize[0]);
 
             // ensure width
-            assertEquals(25, boardSize[1]);
+            assertEquals(
+                    "Failure - Get board size height is not 25",
+                    25,
+                    boardSize[1]);
 
             // ensure mine quantity
             Field bMineQty = Board.class.getDeclaredField("mineQty");
             bMineQty.setAccessible(true);
-            assertEquals(15l, bMineQty.get(board));
+            assertEquals(
+                    "Failure - Board mine quantity is not 15",
+                    15l,
+                    bMineQty.get(board));
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Create new game error " + e.getMessage());
         }
 
     }
@@ -147,10 +172,16 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = new ConsoleGameController();
 
         // ensure controller not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Create controller error, null object",
+                controller
+        );
 
         // ensure game board is not created
-        assertNull(controller.getBoard());
+        assertNull(
+                "Failure - Create controller error, board is null",
+                controller.getBoard()
+        );
 
         // create new game with settings height less than 0
         try {
@@ -171,7 +202,8 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
 
             // test case not pass
-            fail();
+            fail("Failure - Create new game with height -1 " +
+                    "not throw exception");
 
         } catch (Exception e) {
 
@@ -181,10 +213,13 @@ public class ConsoleGameControllerTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure target is instance of BoardCreateUnable
-            assertTrue(targetEx instanceof BoardCreateUnable);
+            assertTrue(
+                    "Failure - The exception is not BoardCreateUnable",
+                    targetEx instanceof BoardCreateUnable);
 
             // ensure exception message
             assertEquals(
+                    "Failure - Create new game with height is -1 message wrong",
                     String.format("Board's height must be from %d to %d",
                             Board.MIN_HEIGHT,
                             Board.MAX_HEIGHT),
@@ -198,7 +233,7 @@ public class ConsoleGameControllerTest {
 
             // prepare settings for create new game
             HashMap<String, String> settings = new HashMap<String, String>();
-            settings.put("height", "60000");
+            settings.put("height", "60001");
             settings.put("width", "25");
             settings.put("mine_quantity", "15");
 
@@ -212,7 +247,8 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
 
             // test case not pass
-            fail();
+            fail("Failure - Create new game with height 60001 " +
+                    "not throw exception");
 
         } catch (Exception e) {
 
@@ -222,10 +258,14 @@ public class ConsoleGameControllerTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure target is instance of BoardCreateUnable
-            assertTrue(targetEx instanceof BoardCreateUnable);
+            assertTrue(
+                    "Failure - The exception is not BoardCreateUnable",
+                    targetEx instanceof BoardCreateUnable);
 
             // ensure exception message
             assertEquals(
+                    "Failure - Create new game with height is " +
+                            "60001 message wrong",
                     String.format("Board's height must be from %d to %d",
                             Board.MIN_HEIGHT,
                             Board.MAX_HEIGHT),
@@ -253,7 +293,8 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
 
             // test case not pass
-            fail();
+            fail("Failure - Create new game with width -1 " +
+                    "not throw exception");
 
         } catch (Exception e) {
 
@@ -263,10 +304,14 @@ public class ConsoleGameControllerTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure target is instance of BoardCreateUnable
-            assertTrue(targetEx instanceof BoardCreateUnable);
+            assertTrue(
+                    "Failure - The exception is not BoardCreateUnable",
+                    targetEx instanceof BoardCreateUnable
+            );
 
             // ensure exception message
             assertEquals(
+                    "Failure - Create new game with width is -1 message wrong",
                     String.format("Board's width must be from %d to %d",
                             Board.MIN_HEIGHT,
                             Board.MAX_HEIGHT),
@@ -294,7 +339,8 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
 
             // test case not pass
-            fail();
+            fail("Failure - Create new game with width 27 " +
+                    "not throw exception");
 
         } catch (Exception e) {
 
@@ -304,10 +350,13 @@ public class ConsoleGameControllerTest {
             Throwable targetEx = itEx.getTargetException();
 
             // ensure target is instance of ConsoleControllerException
-            assertTrue(targetEx instanceof ConsoleControllerException);
+            assertTrue(
+                    "Failure - The exception is not ConsoleControllerException",
+                    targetEx instanceof ConsoleControllerException);
 
             // ensure exception message
             assertEquals(
+                    "Failure - Create new game with width is 27 message wrong",
                     "In console mode, board width " +
                             "must less than or equal 26 columns",
                     targetEx.getMessage()
@@ -339,7 +388,9 @@ public class ConsoleGameControllerTest {
                     ConsoleGameController.class.getDeclaredField("isGameExit");
             isGameExit.setAccessible(true);
 
-            assertFalse(isGameExit.getBoolean(controller));
+            assertFalse(
+                    "Failure - After create controller, game is exit",
+                    isGameExit.getBoolean(controller));
 
             // get show main menu function
             Method showMainMenu = ConsoleGameController
@@ -353,6 +404,7 @@ public class ConsoleGameControllerTest {
             // ensure output
             // ensure main menu message
             assertEquals(
+                    "Failure - Main menu message wrong",
                     "Please choose below options\n" +
                             "0. Exit game\n" +
                             "1. Create new game\n" +
@@ -364,7 +416,7 @@ public class ConsoleGameControllerTest {
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -405,6 +457,7 @@ public class ConsoleGameControllerTest {
             // ensure output
             // ensure main menu message
             assertEquals(
+                    "Failure - Main menu message wrong",
                     "Please choose below options\n" +
                             "0. Exit game\n" +
                             "1. Create new game\n" +
@@ -412,11 +465,13 @@ public class ConsoleGameControllerTest {
                     out.toString());
 
             // ensure game is not exit
-            assertFalse(isGameExit.getBoolean(controller));
+            assertFalse(
+                    "Failure - Main menu is 1 but game is exit",
+                    isGameExit.getBoolean(controller));
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         }
 
     }
@@ -485,26 +540,39 @@ public class ConsoleGameControllerTest {
             expected.append("Please, set the mine quantity\n");
 
             // ensure output message
-            assertEquals(expected.toString(), out.toString());
+            assertEquals(
+                    "Failure - Main menu message wrong",
+                    expected.toString(), out.toString());
 
             // ensure game is not exit
-            assertFalse(isGameExit.getBoolean(controller));
+            assertFalse(
+                    "Failure - Main menu is 2 but game is exit",
+                    isGameExit.getBoolean(controller));
 
             // ensure game setting has been set
             Map<String, String> settings = controller.getSettings();
 
             // ensure setting height
-            assertEquals("25", settings.get("height"));
+            assertEquals(
+                    "Failure - Setting height is not 25",
+                    "25",
+                    settings.get("height"));
 
             // ensure setting width
-            assertEquals("15", settings.get("width"));
+            assertEquals(
+                    "Failure - Setting width is not 15",
+                    "15",
+                    settings.get("width"));
 
             // ensure setting mine quantity
-            assertEquals("20", settings.get("mine_quantity"));
+            assertEquals(
+                    "Failure - Setting mine quantity is not 20",
+                    "20",
+                    settings.get("mine_quantity"));
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         }
 
     }
@@ -538,6 +606,7 @@ public class ConsoleGameControllerTest {
             // ensure output
             // ensure main menu message
             assertEquals(
+                    "Failure - Main menu message wrong",
                     "Please choose below options\n" +
                             "0. Exit game\n" +
                             "1. Create new game\n" +
@@ -548,11 +617,14 @@ public class ConsoleGameControllerTest {
             Field isGameExit =
                     ConsoleGameController.class.getDeclaredField("isGameExit");
             isGameExit.setAccessible(true);
-            assertTrue(isGameExit.getBoolean(controller));
+            assertTrue(
+                    "Failure - Chosen option is not 1 or 2, " +
+                            "but game is not exit",
+                    isGameExit.getBoolean(controller));
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         }
 
     }
@@ -601,7 +673,10 @@ public class ConsoleGameControllerTest {
             );
 
             // show error message when input the empty
-            expected.append("Please, choose one of main menu option\n");
+            expected.append(
+                    ConsoleView.ANSI_RED +
+                    "Please, choose one of main menu option"+
+                    ConsoleView.ANSI_RESET +"\n");
 
             // re-display main menu request input message
             expected.append(
@@ -613,11 +688,14 @@ public class ConsoleGameControllerTest {
 
             // ensure output
             // ensure main menu message
-            assertEquals(expected.toString(), out.toString());
+            assertEquals(
+                    "Failure - Main menu message wrong",
+                    expected.toString(),
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         }
 
     }
@@ -666,7 +744,10 @@ public class ConsoleGameControllerTest {
             );
 
             // show error message when input the non numeric
-            expected.append("Please, input the number\n");
+            expected.append(
+                    ConsoleView.ANSI_RED +
+                    "Please, input the number" +
+                    ConsoleView.ANSI_RESET + "\n");
 
             // re-display main menu request input message
             expected.append(
@@ -678,11 +759,14 @@ public class ConsoleGameControllerTest {
 
             // ensure output
             // ensure main menu message
-            assertEquals(expected.toString(), out.toString());
+            assertEquals(
+                    "Failure - Main menu message wrong",
+                    expected.toString(),
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu error " + e.getMessage());
         }
 
     }
@@ -704,7 +788,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateChosenSquareInput = null;
@@ -717,32 +803,35 @@ public class ConsoleGameControllerTest {
             validateChosenSquareInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         try {
 
             // test validate chosen square input, input 0
             assertEquals(
+                    "Failure - Input 0, but not valid",
                     true,
                     validateChosenSquareInput.invoke(controller, "0")
             );
 
             // test validate chosen square input, input a1
             assertEquals(
+                    "Failure - Input a1, but not valid",
                     true,
                     validateChosenSquareInput.invoke(controller, "a1")
             );
 
             // test validate chosen square input, input b10
             assertEquals(
+                    "Failure - Input b10, but not valid",
                     true,
                     validateChosenSquareInput.invoke(controller, "b10")
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         }
 
     }
@@ -764,7 +853,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateChosenSquareInput = null;
@@ -777,27 +868,31 @@ public class ConsoleGameControllerTest {
             validateChosenSquareInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate chosen square input, input 1
         try {
 
             assertEquals(
+                    "Failure - Input 1, but valid",
                     false,
                     validateChosenSquareInput.invoke(controller, "1")
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    "Failure - Input 1 error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -806,20 +901,24 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input a, but valid",
                     false,
                     validateChosenSquareInput.invoke(controller, "a")
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    "Failure - Input a error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -828,20 +927,24 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input $, but valid",
                     false,
                     validateChosenSquareInput.invoke(controller, "$")
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    "Failure - Input $ error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -850,20 +953,24 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input ?a10, but valid",
                     false,
                     validateChosenSquareInput.invoke(controller, "?a10")
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input 0 or valid square " +
-                            "choose pattern (Ex: a1, b12)\n",
+                    "Failure - Input ?a10 error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input 0 or valid square " +
+                            "choose pattern (Ex: a1, b12)"+
+                            ConsoleView.ANSI_RESET +"\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -872,17 +979,24 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input empty, but valid",
                     false,
                     validateChosenSquareInput.invoke(controller, "")
             );
 
             // ensure the error message
-            assertEquals("Please, choose square for open\n", out.toString()
+            assertEquals(
+                    "Failure - Input empty error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, choose square for open" +
+                            ConsoleView.ANSI_RESET +
+                            "\n",
+                    out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -904,7 +1018,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateChosenSquareModeInput = null;
@@ -917,26 +1033,28 @@ public class ConsoleGameControllerTest {
             validateChosenSquareModeInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         try {
 
             // test validate chosen square input, input 'o'
             assertEquals(
+                    "Failure - Input o but invalid",
                     true,
                     validateChosenSquareModeInput.invoke(controller, "o")
             );
 
             // test validate chosen square input, input 'x'
             assertEquals(
+                    "Failure - Input x but invalid",
                     true,
                     validateChosenSquareModeInput.invoke(controller, "x")
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         }
 
     }
@@ -956,7 +1074,10 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller
+        );
 
         // get function
         Method validateChosenSquareModeInput = null;
@@ -969,23 +1090,30 @@ public class ConsoleGameControllerTest {
             validateChosenSquareModeInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate chosen square input, input 'o123'
         try {
 
             assertEquals(
+                    "Failure - Input o123, but valid",
                     false,
                     validateChosenSquareModeInput.invoke(controller, "o123")
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    "Failure - Input o123 error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString()
+            );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -994,16 +1122,22 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input a1, but valid",
                     false,
                     validateChosenSquareModeInput.invoke(controller, "a1")
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    "Failure - Input a1 error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1012,16 +1146,22 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input ox, but valid",
                     false,
                     validateChosenSquareModeInput.invoke(controller, "ox")
             );
 
             // ensure the error message
-            assertEquals("Please, input o or x value\n", out.toString());
+            assertEquals(
+                    "Failure - Input ox error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input o or x value" +
+                            ConsoleView.ANSI_RESET + "\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1030,26 +1170,35 @@ public class ConsoleGameControllerTest {
         try {
 
             assertEquals(
+                    "Failure - Input empty, but valid",
                     false,
                     validateChosenSquareModeInput.invoke(controller, "")
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, choose square for open or" +
-                            " toggle mine check\n",
+                    "Failure - Input empty error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, choose square for open or" +
+                            " toggle mine check" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
 
     }
 
+    /**
+     * Test validate game setting input in valid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputValidCase() {
 
@@ -1057,7 +1206,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateGameSettingInput = null;
@@ -1070,7 +1221,7 @@ public class ConsoleGameControllerTest {
             validateGameSettingInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate game setting input, input numeric
@@ -1082,19 +1233,25 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "200");
 
             assertEquals(
+                    "Failure - Input numeric, but invalid",
                     true,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
 
     }
 
+    /**
+     * Test validate game setting's height input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidHeight() {
 
@@ -1102,7 +1259,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateGameSettingInput = null;
@@ -1115,7 +1274,7 @@ public class ConsoleGameControllerTest {
             validateGameSettingInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate game setting input, input height is empty
@@ -1127,19 +1286,23 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "200");
 
             assertEquals(
+                    "Failure - Input height empty but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's height\n",
+                    "Failure - Input height empty error message error",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's height" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1153,25 +1316,34 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "200");
 
             assertEquals(
+                    "Failure - Input height a120 but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's height\n",
+                    "Failure - Input height a120 error message error",
+                    ConsoleView.ANSI_RED +
+                            "Please, input numeric for game's height" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
 
     }
 
+    /**
+     * Test validate game setting's width input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidWidth() {
 
@@ -1179,7 +1351,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateGameSettingInput = null;
@@ -1192,7 +1366,7 @@ public class ConsoleGameControllerTest {
             validateGameSettingInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate game setting input, input width is empty
@@ -1204,19 +1378,23 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "200");
 
             assertEquals(
+                    "Failure - Input width empty but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's width\n",
+                    "Failure - Input width empty error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's width" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1230,25 +1408,34 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "200");
 
             assertEquals(
+                    "Failure - Input width a120 but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's width\n",
+                    "Failure - Input width a120 error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input numeric for game's width" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Validate error " + e.getMessage());
         } finally {
             out.reset();
         }
 
     }
 
+    /**
+     * Test validate game setting's mine quantity input in invalid case.
+     * In game setting, user can choose board's height, width and mine quantity.
+     * These setting is accept only numeric input
+     */
     @Test
     public void testValidateGameSettingInputInValidMineQuantity() {
 
@@ -1256,7 +1443,9 @@ public class ConsoleGameControllerTest {
         ConsoleGameController controller = this.createTheController();
 
         // ensure controller is not null
-        assertNotNull(controller);
+        assertNotNull(
+                "Failure - Controller create fail, null object",
+                controller);
 
         // get function
         Method validateGameSettingInput = null;
@@ -1269,7 +1458,7 @@ public class ConsoleGameControllerTest {
             validateGameSettingInput.setAccessible(true);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         }
 
         // test validate game setting input, input mine quantity is empty
@@ -1281,19 +1470,23 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "");
 
             assertEquals(
+                    "Failure - Input mine quantity empty but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, give input for game's mine quantity\n",
+                    "Failure - Input mine quantity empty error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, give input for game's mine quantity"+
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1307,19 +1500,23 @@ public class ConsoleGameControllerTest {
             settings.put("mine_quantity", "a$$$");
 
             assertEquals(
+                    "Failure - Input mine quantity a$$$ but valid",
                     false,
                     validateGameSettingInput.invoke(controller, settings)
             );
 
             // ensure the error message
             assertEquals(
-                    "Please, input number for game's mine quantity\n",
+                    "Failure - Input mine quantity a$$$ error message wrong",
+                    ConsoleView.ANSI_RED +
+                            "Please, input numeric for game's mine quantity" +
+                            ConsoleView.ANSI_RESET + "\n",
                     out.toString()
             );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Get function error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -1355,7 +1552,7 @@ public class ConsoleGameControllerTest {
             createNewGame.invoke(controller, settings);
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Create controller error " + e.getMessage());
         }
 
          return controller;

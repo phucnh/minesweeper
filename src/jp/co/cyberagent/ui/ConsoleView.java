@@ -14,6 +14,11 @@ import java.util.Map;
  */
 public class ConsoleView extends GameView {
 
+    // ANSI escape code, using for print color message
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
     // buffer reader for get user input
     private BufferedReader buffReader;
 
@@ -24,6 +29,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Create the console view, set the buffered reader, and writer
+     *
      * @param buffReader buffered reader for read user input
      * @param buffWriter buffered writer for show the message to user
      */
@@ -36,8 +42,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement display board game
+     *
      * Display game's board in console
+     *
      * @param board the game's board
+     *
      * @throws IOException raise when have interact with user error
      * @throws BoardException raise when have the board error, board is
      *         out of bound
@@ -52,8 +61,8 @@ public class ConsoleView extends GameView {
 
         // print board to screen
         // print white space
-        int numberCharOfHeight = Integer.toString(height).length();
-        this.printWhiteSpace(numberCharOfHeight);
+        int numberCharOfHeight = Integer.toString(height - 1).length();
+        this.printWhiteSpace(numberCharOfHeight + 1);
 
         // print column index
         for (int c = 0; c < width; c++) {
@@ -71,7 +80,7 @@ public class ConsoleView extends GameView {
             // print the white space if number character of row
             // is not same with height
             this.printWhiteSpace(
-                    numberCharOfHeight - Integer.toString(r).length());
+                    numberCharOfHeight - Integer.toString(r).length() + 1);
 
             // display the square
             for (int c = 0; c < width; c++) {
@@ -89,8 +98,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement main menu.
+     *
      * Display the main menu, get user input
+     *
      * @return String the user input
+     *
      * @throws IOException raise when have user interact error
      */
     @Override
@@ -114,8 +126,11 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement game setting
+     *
      * Display the setting request input message, get input from user
+     *
      * @return Map<String, String> the game's setting that get from user
+     *
      * @throws IOException raise when have user interact error
      */
     @Override
@@ -152,10 +167,13 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement display the chosen square.
+     *
      * In console mode, the implement is re-display the board
+     *
      * @param board the board that want to display the chosen square
      * @param chosenRow the square's row index
      * @param chosenCol the square's column index
+     *
      * @throws IOException raise when have user interact error
      * @throws BoardException raise when have the board exception
      */
@@ -170,6 +188,7 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on win.
+     *
      * Display the win message to user
      */
     @Override
@@ -179,22 +198,27 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement on lose
+     *
      * Display the lose message to user
      */
     @Override
     public void onLose() {
-        System.out.println("Oops! You opened the mine! Game over.");
+        System.out.println("Oops! You opened the mine! Game over");
     }
 
     /**
      * Implement choose square.
+     *
      * Display the choose square request message, get chosen square from user
+     *
      * @return String the chosen square from user
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
     public String chooseSquare() throws IOException {
-        buffWriter.write("Please, choose square to open or mine check (0 for back to Main Menu) ");
+        buffWriter.write("Please, choose square to open or " +
+                "mine check (0 for back to Main Menu)");
         buffWriter.newLine();
         buffWriter.flush();
         return buffReader.readLine();
@@ -202,21 +226,39 @@ public class ConsoleView extends GameView {
 
     /**
      * Implement show message
+     *
      * Display the message to user
+     *
      * @param message the message that want to display
+     * @param type the type of message (error, warning)
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
-    public void showMessage(String message) throws IOException {
-        buffWriter.write(message);
+    public void showMessage(String message, String type) throws IOException {
+
+        // message color
+        String color = "";
+
+        // get color
+        if (type.equals(MSG_ERR))
+            color = ANSI_RED;
+        else if (type.equals(MSG_WRN))
+            color = ANSI_YELLOW;
+
+        buffWriter.write(color + message + ANSI_RESET);
         buffWriter.newLine();
         buffWriter.flush();
     }
 
     /**
      * Implement choose square mode
+     *
      * Display the choose square mode message, get chosen mode from user
+     * The square mode is open square or toggle mine check
+     *
      * @return String the square mode, open or mine check
+     *
      * @throws IOException raise when have the board exception
      */
     @Override
@@ -247,7 +289,9 @@ public class ConsoleView extends GameView {
 
     /**
      * Display the square. Empty square is ' ', Number square is number,
+     *
      * Mine square is 'x'
+     *
      * @param square the square that want to display
      */
     private void displaySquare(Square square) throws IOException {

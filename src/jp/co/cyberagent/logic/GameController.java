@@ -1,12 +1,8 @@
 package jp.co.cyberagent.logic;
 
 import jp.co.cyberagent.components.Board;
-import jp.co.cyberagent.components.PlayStatus;
-import jp.co.cyberagent.components.exceptions.*;
 import jp.co.cyberagent.exceptions.GameException;
-import jp.co.cyberagent.logic.exceptions.ConsoleControllerException;
 import jp.co.cyberagent.ui.GameView;
-import jp.co.cyberagent.ui.exceptions.ViewException;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -37,6 +33,7 @@ public abstract class GameController {
 
     /**
      * Base constructor, set the game view and run game
+     *
      * @param view
      */
     public GameController(GameView view) {
@@ -54,6 +51,7 @@ public abstract class GameController {
 
     /**
      * Get game's board
+     *
      * @return Board the game's board
      */
     public Board getBoard() {
@@ -62,6 +60,7 @@ public abstract class GameController {
 
     /**
      * Set the game's board
+     *
      * @param board the object that want to set
      */
     public void setBoard(Board board) {
@@ -72,6 +71,7 @@ public abstract class GameController {
     /**
      * Get game's settings.
      * Board's height, board's width, board's mine quantity
+     *
      * @return Map<String, Stirng> game's settings
      */
     public Map<String, String> getSettings() {
@@ -80,6 +80,7 @@ public abstract class GameController {
 
     /**
      * Set the game's settings
+     *
      * @param settings the game's settings
      */
     public void setSettings(Map<String, String> settings) {
@@ -88,6 +89,7 @@ public abstract class GameController {
 
     /**
      * Begin run game
+     *
      * @throws Exception raise when game have error
      */
     public void run() throws Exception {
@@ -126,13 +128,16 @@ public abstract class GameController {
 
     /**
      * Show the game menu
+     *
      * @throws IOException raise when interact with user error
      */
     protected abstract void showMainMenu() throws IOException;
 
     /**
      * Create the new game
+     *
      * @param settings the game's settings
+     *
      * @throws GameException
      */
     protected abstract void createNewGame(Map<String, String> settings)
@@ -140,6 +145,7 @@ public abstract class GameController {
 
     /**
      * The play function
+     *
      * @throws GameException raise when have in game error
      * @throws IOException raise when interact with user error
      */
@@ -147,12 +153,14 @@ public abstract class GameController {
 
     /**
      * Check is game end or not
+     *
      * @return boolean is game and or not
      */
     protected abstract boolean isGameEnd();
 
     /**
      * Check is user's want to exit the game
+     *
      * @return boolean is game exit or not
      */
     protected abstract boolean isGameExit();
