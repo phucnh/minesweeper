@@ -198,7 +198,7 @@ public class ConsoleView extends GameView {
      */
     @Override
     public void onLose() {
-        System.out.println("Oops! You opened the mine! Game over.");
+        System.out.println("Oops! You opened the mine! Game over");
     }
 
     /**
@@ -209,7 +209,8 @@ public class ConsoleView extends GameView {
      */
     @Override
     public String chooseSquare() throws IOException {
-        buffWriter.write("Please, choose square to open or mine check (0 for back to Main Menu) ");
+        buffWriter.write("Please, choose square to open or " +
+                "mine check (0 for back to Main Menu)");
         buffWriter.newLine();
         buffWriter.flush();
         return buffReader.readLine();
@@ -232,9 +233,9 @@ public class ConsoleView extends GameView {
         String color = "";
 
         // get color
-        if (type == MSG_ERR)
+        if (type.equals(MSG_ERR))
             color = ANSI_RED;
-        else if (type == MSG_WRN)
+        else if (type.equals(MSG_WRN))
             color = ANSI_YELLOW;
 
         buffWriter.write(color + message + ANSI_RESET);

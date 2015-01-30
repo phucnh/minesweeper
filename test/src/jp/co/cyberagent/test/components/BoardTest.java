@@ -1351,7 +1351,7 @@ public class BoardTest {
             // create new mine square object
             return constructor.newInstance();
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create mine square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass
@@ -1375,7 +1375,7 @@ public class BoardTest {
             // create new empty square object
             return constructor.newInstance();
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create empty square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass
@@ -1399,7 +1399,7 @@ public class BoardTest {
             // create new number square object
             return constructor.newInstance(value);
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create number square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass

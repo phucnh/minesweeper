@@ -58,18 +58,24 @@ public class ConsoleViewTest {
 
             // ensure main menu message
             assertEquals(
+                    "Failure - Main menu message incorrect",
                     "Please choose below options\n" +
                             "0. Exit game\n" +
                             "1. Create new game\n" +
                             "2. Setting\n",
-                    out.toString());
+                    out.toString()
+            );
 
             // ensure chosen value
-            assertEquals("0", chosen);
+            assertEquals(
+                    "Failure - The input value is not 0",
+                    "0",
+                    chosen
+            );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Main menu function error " + e.getMessage());
         } finally {
             System.setIn(System.in);
         }
@@ -112,22 +118,37 @@ public class ConsoleViewTest {
 
             // ensure game setting message
             assertEquals(
+                    "Failure - Setting message wrong",
                     "Please, set the height\n" +
                             "Please, set the width\n" +
                             "Please, set the mine quantity\n",
-                    out.toString());
+                    out.toString()
+            );
 
             // ensure input setting height
-            assertEquals("10", settings.get("height"));
+            assertEquals(
+                    "Failure - Input height is not 10",
+                    "10",
+                    settings.get("height")
+            );
 
             // ensure input setting width
-            assertEquals("15", settings.get("width"));
+            assertEquals(
+                    "Failure - Input width is not 15",
+                    "15",
+                    settings.get("width")
+            );
 
             // ensure input setting mine quantity
-            assertEquals("20", settings.get("mine_quantity"));
+            assertEquals(
+                    "Failure - Input mine quantity is not 20",
+                    "20",
+                    settings.get("mine_quantity")
+            );
 
         } catch (Exception e) {
             // test case not pass
+            fail("Failure - Game setting error " + e.getMessage());
         } finally {
             System.setIn(System.in);
         }
@@ -152,11 +173,14 @@ public class ConsoleViewTest {
             view.onWin();
 
             // ensure main menu message
-            assertEquals("You win, congratulation!\n", out.toString());
+            assertEquals(
+                    "Failure - Win message incorrect",
+                    "You win, congratulation!\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - On win error " + e.getMessage());
         }
 
     }
@@ -179,12 +203,14 @@ public class ConsoleViewTest {
             view.onLose();
 
             // ensure main menu message
-            assertEquals("Oops! You opened the mine! Game over.\n",
-                         out.toString());
+            assertEquals(
+                    "Failure - Lose message incorrect",
+                    "Oops! You opened the mine! Game over\n",
+                    out.toString());
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - On lose error " + e.getMessage());
         }
 
     }
@@ -212,16 +238,20 @@ public class ConsoleViewTest {
 
             // ensure choose square message
             assertEquals(
+                    "Failure - Chosen square message incorrect",
                     "Please, choose square to open or " +
-                            "mine check (0 for back to Main Menu) \n",
+                            "mine check (0 for back to Main Menu)\n",
                     out.toString());
 
             // ensure chosen value
-            assertEquals("0", chosen);
+            assertEquals(
+                    "Failure - The input is not 0",
+                    "0",
+                    chosen);
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Choose square error " + e.getMessage());
         } finally {
             System.setIn(System.in);
         }
@@ -266,15 +296,21 @@ public class ConsoleViewTest {
 
             // ensure choose square mode
             assertEquals(
+                    "Failure - chosen open square mode message incorrect",
                     "Please, choose open (o) or toggle mine checked (x)\n",
-                    out.toString());
+                    out.toString()
+            );
 
             // ensure chosen value
-            assertEquals("0", chosen);
+            assertEquals(
+                    "Failure - input value is not 0",
+                    "0",
+                    chosen
+            );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Choose square mode error " + e.getMessage());
         } finally {
             System.setIn(System.in);
         }
@@ -315,14 +351,16 @@ public class ConsoleViewTest {
 
             // ensure choose square mode
             assertEquals(
+                    "Failure - Output message is incorrect",
                     ConsoleView.ANSI_RED +
                             "test show error message" +
                             ConsoleView.ANSI_RESET + "\n",
-                    out.toString());
+                    out.toString()
+            );
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Show error message error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -340,6 +378,7 @@ public class ConsoleViewTest {
 
             // ensure choose square mode
             assertEquals(
+                    "Failure - Output message is incorrect",
                     ConsoleView.ANSI_YELLOW +
                             "test show warning message" +
                             ConsoleView.ANSI_RESET + "\n",
@@ -347,7 +386,7 @@ public class ConsoleViewTest {
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Show warning error " + e.getMessage());
         }
 
     }
@@ -380,7 +419,7 @@ public class ConsoleViewTest {
             Board board = new Board(8, 8, 10);
 
             // ensure board not null
-            assertNotNull(board);
+            assertNotNull("Failure - After create, board is null", board);
 
             // create the gird
             Square[][] grid = makeBoard();
@@ -400,6 +439,7 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are closed
             assertEquals(
+                    "Failure - Display board incorrect",
                     "  abcdefgh\n" +
                             "0 ????????\n" +
                             "1 ????????\n" +
@@ -428,6 +468,7 @@ public class ConsoleViewTest {
 
             // ensure display board when all squares are opened
             assertEquals(
+                    "Failure - Display board incorrect",
                     "  abcdefgh\n" +
                             "0     111 \n" +
                             "1     1x1 \n" +
@@ -441,7 +482,7 @@ public class ConsoleViewTest {
 
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Display board error " + e.getMessage());
         } finally {
             // reset out
             out.reset();
@@ -454,7 +495,7 @@ public class ConsoleViewTest {
             Board board = new Board(8, 8, 10);
 
             // ensure board not null
-            assertNotNull(board);
+            assertNotNull("Failure - After create, board is null", board);
 
             // create the gird
             Square[][] grid = makeBoard();
@@ -470,10 +511,9 @@ public class ConsoleViewTest {
             );
 
             // open some square
-            board.openSquare(0, 0); // Empty square
-            board.openSquare(0, 4); // Number square, value is 1
-            board.openSquare(4, 0); // Mine square
-            board.openSquare(5, 5); // Number square, value is 3
+            board.openSquare(0, 0);
+            board.openSquare(4, 0);
+            board.openSquare(5, 5);
 
             // toggle mine check
             board.toggleMineCheckSquare(1, 5);
@@ -484,73 +524,21 @@ public class ConsoleViewTest {
 
             // ensure display board
             assertEquals(
-                    " abcdefgh\n" +
-                            "0 ???1???\n" +
-                            "1?????x??\n" +
-                            "2????????\n" +
-                            "3????????\n" +
-                            "4x????x??\n" +
-                            "5?????3??\n" +
-                            "6????????\n" +
-                            "7????????\n",
-                    out.toString());
-
-        } catch (Exception e) {
-            // test case not pass
-        } finally {
-            out.reset();
-        }
-
-        // test display board, open all squares
-        try {
-
-            // create new board
-            Board board = new Board(8, 8, 10);
-
-            // ensure board not null
-            assertNotNull(board);
-
-            // create the gird
-            Square[][] grid = makeBoard();
-            // set board
-            Field bGrid = Board.class.getDeclaredField("grid");
-            bGrid.setAccessible(true);
-            bGrid.set(board, grid);
-
-            // create a view
-            ConsoleView view = new ConsoleView(
-                    new BufferedReader(new InputStreamReader(System.in)),
-                    new BufferedWriter(new OutputStreamWriter(System.out))
-            );
-
-            // open all squares
-            for (int r = 0; r < 8; r++) {
-                for (int c = 0; c < 8; c++) {
-
-                    // open remain squares
-                    if (!board.getSquare(r, c).isOpened())
-                        board.openSquare(r, c);
-                }
-            }
-
-            // test function
-            view.displayBoard(board);
-
-            // ensure display board when all squares are opened
-            assertEquals(
+                    "Failure - Display board incorrect",
                     "  abcdefgh\n" +
-                            "0     111 \n" +
-                            "1     1x1 \n" +
-                            "2     1221\n" +
-                            "3 11 112x1\n" +
-                            "4 x1 1x211\n" +
-                            "5 22112321\n" +
-                            "6 1x322xx2\n" +
-                            "7 12xx223x\n",
+                            "0     1???\n" +
+                            "1     1x??\n" +
+                            "2     1???\n" +
+                            "3 11 11???\n" +
+                            "4 x1 1?x??\n" +
+                            "5 ?211?3??\n" +
+                            "6 ????????\n" +
+                            "7 ????????\n",
                     out.toString());
+
         } catch (Exception e) {
             // test case not pass
-            fail();
+            fail("Failure - Display board error " + e.getMessage());
         } finally {
             out.reset();
         }
@@ -649,7 +637,7 @@ public class ConsoleViewTest {
             // create new mine square object
             return constructor.newInstance();
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create mine square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass
@@ -673,7 +661,7 @@ public class ConsoleViewTest {
             // create new empty square object
             return constructor.newInstance();
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create empty square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass
@@ -697,7 +685,7 @@ public class ConsoleViewTest {
             // create new number square object
             return constructor.newInstance(value);
         } catch (Exception e) {
-            fail();
+            fail("Failure - Create number square error " + e.getMessage());
         }
 
         // when square is not created successfully, test case not pass
