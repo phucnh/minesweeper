@@ -31,9 +31,11 @@ public class Board {
 
     /**
      * Board constructor, create game board
+     *
      * @param height board's height
      * @param width board's width
      * @param mineQty board's mine quantity
+     *
      * @throws BoardCreateUnable if height, width, mine quantity are within invalid range
      * @throws SquareWrongValueException
      */
@@ -62,8 +64,10 @@ public class Board {
         long maxNumMine = height * width - 1;
         if (mineQty < 1 || mineQty > maxNumMine)
             throw new BoardCreateUnable(
-                    String.format("Board's mine must be more than 1 and less than %d",
-                                  maxNumMine)
+                    String.format(
+                            "Board's mine must be more than 1 and less than %d",
+                            maxNumMine
+                    )
             );
 
         // set value to board
@@ -87,6 +91,7 @@ public class Board {
      * height: 5
      * width: 5
      * mine quantity: 5
+     *
      * @throws BoardCreateUnable
      */
     public Board() throws BoardCreateUnable, SquareWrongValueException {
@@ -95,6 +100,7 @@ public class Board {
 
     /**
      * Get board's grid size
+     *
      * @return int[] [height, width]
      */
     public int[] getSize() {
@@ -103,9 +109,12 @@ public class Board {
 
     /**
      * Toggle board's square by index
+     *
      * @param row square's row index
      * @param col square's column index
+     *
      * @return Square the toggled square
+     *
      * @throws BoardOutOfBoundException
      * @throws SquareOpenedException
      */
@@ -126,9 +135,12 @@ public class Board {
 
     /**
      * Open board's square
+     *
      * @param row the square's row index
      * @param col the square's column index
+     *
      * @return PlaySatus is gamer win, lose, or normal
+     *
      * @throws BoardOutOfBoundException
      * @throws SquareCheckedException
      * @throws SquareOpenedException
@@ -327,6 +339,7 @@ public class Board {
 
     /**
      * Check square index, ensure index in valid
+     *
      * @throws BoardOutOfBoundException
      */
     private void checkChooseSquareIndex(int row, int col)
@@ -345,6 +358,7 @@ public class Board {
 
     /**
      * Fill square, generate mine square randomly
+     *
      * @throws SquareWrongValueException
      */
     private void fill() throws SquareWrongValueException {
@@ -422,9 +436,11 @@ public class Board {
 
     /**
      * Get neighbor around square by direction
+     *
      * @param row the square row index
      * @param col the square column index
      * @param direction the direction from the square that want to get neighbor
+     *
      * @return the neighbor square by direction
      */
     private Square getNeighborSquare(int row, int col, Direction direction) {
@@ -452,9 +468,11 @@ public class Board {
 
     /**
      * Get neighbor index around square by direction
+     *
      * @param row the square row index
      * @param col the square column index
      * @param direction the direction from the square that want to get neighbor
+     *
      * @return int[] the neighbour square index int[row, column]
      */
     private int[] getNeighborIndex(int row, int col, Direction direction) {
@@ -497,9 +515,12 @@ public class Board {
 
     /**
      * Get board's square instance
+     *
      * @param row the square's row index
      * @param col the square's column index
+     *
      * @return Square
+     *
      * @throws BoardOutOfBoundException
      */
     public Square getSquare(int row, int col) throws BoardOutOfBoundException {
