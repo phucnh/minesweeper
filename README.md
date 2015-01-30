@@ -97,11 +97,11 @@ For testing this source code, please follow below step
     ```
     
     - For run test on each component
-        1. Bulid the test code
+        - Bulid the test code
         ``` shell
         make build-test
         ```
-        2. Run each element test
+        - Run each element test
             - Test game's components: Board, Square
             ``` shell
             make test-components-board
