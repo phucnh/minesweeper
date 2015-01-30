@@ -5,7 +5,7 @@ The game has been made using [Java language](https://java.com/en/), test on [Jav
 
 This game had built on console base, for run it, please read the User Guide below.
 
-[Screen Shot](https://drive.google.com/open?id=0B3seRHYL3yb-fkZxcmxlNWpYRVhlTGF6YUVjRjZjQ2R4TWIyRjFfenloTW5HS3paeFB2WW8&authuser=0)
+[Screenshots](https://drive.google.com/open?id=0B3seRHYL3yb-fkZxcmxlNWpYRVhlTGF6YUVjRjZjQ2R4TWIyRjFfenloTW5HS3paeFB2WW8&authuser=0)
 
 ## User Guide
 ### Run game from Java Archive file
@@ -50,22 +50,22 @@ For build and run this game from source code, please follow below step
     ```
 
 ## Development
-This game has been designed using [Template method](http://en.wikipedia.org/wiki/Template_method_pattern) and [Model - View - Controller](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern.
+This game has been designed using [Template method](http://en.wikipedia.org/wiki/Template_method_pattern) and [Model - View - Controller](http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) pattern. 
 
-1. Packages
-    - Components: this package contains the game's element that have own logic
-        - Square: The abstract class, contain the base attribute and behavior of a square.
-        - Empty Square: Extend from Square, the concrete class of Square, represent Empty Square (no mine around)
-        - Mine Square: Extend from Square, the concrete class of Square, represent Mine Square
-        - Number Square: Extend from Square, the concrete class of Square, represent Number Square with value is number of mine around
+### Packages
+1. **Components:** this package contains the game's element that have own logic
+    - _Square_: The abstract class, contain the base attribute and behavior of a square.
+    - _Empty Square_: Extend from Square, the concrete class of Square, represent Empty Square (no mine around)
+    - _Mine Square_: Extend from Square, the concrete class of Square, represent Mine Square
+    - _Number Square_: Extend from Square, the concrete class of Square, represent Number Square with value is number of mine around
         
-    - View: contains the game view, the view will interact with user, show the message and get user input
-        - GameView: The abstract class, contain the base attribute and behavior of a View
-        - ConsoleView: Extend from GameView, implement the game for console environment
+2. **View**: contains the game view, the view will interact with user, show the message and get user input
+    - _GameView_: The abstract class, contain the base attribute and behavior of a View
+    - _ConsoleView_: Extend from GameView, implement the game for console environment
 
-    - Logic: contains the game controller that control the game logic using Components package and control the view to interact with user. The controller is implemented follow [Template method](http://en.wikipedia.org/wiki/Template_method_pattern).
-        - GameController: The abstract class, contain the base logic of game. The basic game flow function: play(), showMainMenu, showSetting,createNewGame(), isGameEnd()...
-        - ConsoleGameController: Extend from GameController, implement controller for console environment
+3. **Logic**: contains the game controller that control the game logic using Components package and control the view to interact with user. The controller is implemented follow [Template method](http://en.wikipedia.org/wiki/Template_method_pattern).
+    - _GameController_: The abstract class, contain the base logic of game. The basic game flow function: play(), showMainMenu, showSetting,createNewGame(), isGameEnd()...
+    - _ConsoleGameController_: Extend from GameController, implement controller for console environment
 
 ## Test
 This game has been tested by [Junit 4.2](http://junit.org/) with [Mockito](http://mockito.org) and [Java Hamcrest](http://hamcrest.org/JavaHamcrest/) on [Java Development Kit, Java SE 7, Update 72](http://www.oracle.com/technetwork/java/javase/7u72-relnotes-2296190.html) and Java Runtime Environment, Java SE 7, update 76 [Click here for download jre 7u76](http://www.oracle.com/technetwork/java/javase/downloads/jre7-downloads-1880261.html)
